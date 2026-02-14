@@ -3,1265 +3,1090 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NORT Apart-Hotel — Стратегическая дорожная карта 2026</title>
+<title>NORT КМ — Дорожная карта 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 :root {
---primary: #1a1a2e;
---accent: #e94560;
---accent2: #0f3460;
---bg: #f5f5f7;
---card: #ffffff;
---text: #1a1a2e;
---muted: #6b7280;
---success: #10b981;
---warning: #f59e0b;
---border: #e5e7eb;
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #242837;
+  --border: #2e3347;
+  --accent: #6c5ce7;
+  --accent2: #a29bfe;
+  --green: #00b894;
+  --red: #e17055;
+  --orange: #fdcb6e;
+  --text: #dfe6e9;
+  --text2: #b2bec3;
+  --white: #ffffff;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-
-.app-header {
-background: linear-gradient(135deg, var(--primary), var(--accent2));
-color:white; padding:24px 32px; position:sticky; top:0; z-index:100;
-box-shadow: 0 2px 20px rgba(0,0,0,0.15);
-}
-.app-header h1 { font-size:1.4rem; font-weight:700; }
-.app-header p { font-size:0.85rem; opacity:0.8; margin-top:4px; }
-
-.progress-bar { display:flex; gap:4px; margin-top:16px; }
-.progress-step {
-flex:1; height:6px; border-radius:3px; background:rgba(255,255,255,0.2);
-transition: background 0.3s;
-}
-.progress-step.active { background: var(--accent); }
-.progress-step.done { background: var(--success); }
-
-.container { max-width:960px; margin:0 auto; padding:24px 16px; }
-
-.step { display:none; animation: fadeIn 0.3s ease; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+.app { max-width:1200px; margin:0 auto; padding:20px; }
+.header { text-align:center; padding:30px 0 20px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+.header h1 { font-size:28px; color:var(--white); margin-bottom:8px; }
+.header p { color:var(--text2); font-size:14px; }
+.progress-bar { display:flex; gap:4px; margin:20px 0 30px; }
+.progress-step { flex:1; height:6px; border-radius:3px; background:var(--surface2); cursor:pointer; transition:background .3s; }
+.progress-step.active { background:var(--accent); }
+.progress-step.done { background:var(--green); }
+.step { display:none; }
 .step.active { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-.card {
-background:var(--card); border-radius:12px; padding:24px;
-margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.08);
-border:1px solid var(--border);
-}
-.card h2 { font-size:1.2rem; margin-bottom:4px; color:var(--primary); }
-.card .subtitle { font-size:0.85rem; color:var(--muted); margin-bottom:16px; }
-
-.form-group { margin-bottom:16px; }
-.form-group label {
-display:block; font-size:0.85rem; font-weight:600;
-margin-bottom:6px; color:var(--text);
-}
-.form-group .hint {
-font-size:0.75rem; color:var(--muted); margin-bottom:6px;
-}
-.form-group input, .form-group select, .form-group textarea {
-width:100%; padding:10px 12px; border:1px solid var(--border);
-border-radius:8px; font-size:0.9rem; font-family:inherit;
-transition: border-color 0.2s;
-}
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-outline:none; border-color:var(--accent);
-}
-.form-group textarea { resize:vertical; min-height:80px; }
-
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
-.grid-4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; }
-.grid-6 { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
-.grid-12 { display:grid; grid-template-columns:repeat(12,1fr); gap:6px; }
-
-@media(max-width:768px) {
-.grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; }
-.grid-6 { grid-template-columns:repeat(3,1fr); }
-.grid-12 { grid-template-columns:repeat(4,1fr); }
-}
-
-.month-grid label { font-size:0.75rem; text-align:center; }
-.month-grid input { text-align:center; padding:8px 4px; font-size:0.8rem; }
-
-.btn-row { display:flex; gap:12px; justify-content:flex-end; margin-top:24px; padding-top:16px; border-top:1px solid var(--border); }
-.btn {
-padding:12px 28px; border-radius:8px; font-size:0.9rem; font-weight:600;
-cursor:pointer; border:none; transition:all 0.2s;
-}
-.btn-primary { background:var(--accent); color:white; }
-.btn-primary:hover { background:#d63853; transform:translateY(-1px); }
-.btn-secondary { background:var(--border); color:var(--text); }
-.btn-secondary:hover { background:#d1d5db; }
-.btn-success { background:var(--success); color:white; }
-.btn-success:hover { background:#059669; }
-
-.section-title {
-font-size:0.75rem; font-weight:700; text-transform:uppercase;
-letter-spacing:1px; color:var(--accent); margin:24px 0 12px;
-}
-
-.tag {
-display:inline-block; padding:2px 10px; border-radius:20px;
-font-size:0.75rem; font-weight:600; margin:2px;
-}
-.tag-green { background:#d1fae5; color:#065f46; }
-.tag-red { background:#fee2e2; color:#991b1b; }
-.tag-blue { background:#dbeafe; color:#1e40af; }
-.tag-yellow { background:#fef3c7; color:#92400e; }
-
-.roadmap-table { width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:12px; }
-.roadmap-table th, .roadmap-table td { padding:10px 8px; border:1px solid var(--border); text-align:left; }
-.roadmap-table th { background:var(--primary); color:white; font-weight:600; font-size:0.75rem; }
-.roadmap-table tr:nth-child(even) { background:#f9fafb; }
-.roadmap-table .q-label { background:var(--accent); color:white; font-weight:700; font-size:0.8rem; }
-
-.kpi-card {
-display:flex; flex-direction:column; align-items:center;
-padding:16px; background:#f9fafb; border-radius:8px; border:1px solid var(--border);
-}
-.kpi-card .kpi-value { font-size:1.5rem; font-weight:700; color:var(--accent); }
-.kpi-card .kpi-label { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:4px; }
-.kpi-card .kpi-target { font-size:0.8rem; color:var(--success); font-weight:600; margin-top:2px; }
-
-.ota-row { display:grid; grid-template-columns: 160px 1fr 1fr 1fr 1fr 1fr; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
-.ota-row.header { font-weight:700; font-size:0.75rem; color:var(--muted); }
-.ota-row span { font-size:0.85rem; }
-.ota-row input, .ota-row select { padding:6px 8px; font-size:0.8rem; }
-
-@media(max-width:768px) {
-.ota-row { grid-template-columns:1fr; }
-}
-
-.result-section { margin-bottom:32px; }
-.result-section h3 { font-size:1.1rem; margin-bottom:12px; color:var(--primary); padding-bottom:8px; border-bottom:2px solid var(--accent); }
-
-.timeline-item {
-padding:16px; margin-bottom:8px; border-left:4px solid var(--accent);
-background:var(--card); border-radius:0 8px 8px 0;
-}
-.timeline-item .tl-month { font-weight:700; color:var(--accent); font-size:0.85rem; }
-.timeline-item .tl-tasks { margin-top:8px; }
-.timeline-item .tl-task {
-padding:6px 0; font-size:0.85rem; display:flex; justify-content:space-between;
-border-bottom:1px solid #f3f4f6;
-}
-.timeline-item .tl-task:last-child { border:none; }
-.timeline-item .tl-resp { font-size:0.75rem; color:var(--muted); }
-
-#printArea { display:none; }
-@media print {
-.app-header, .btn-row, .no-print { display:none!important; }
-#printArea { display:block!important; }
-.step { display:none!important; }
-body { background:white; }
-}
-
-.prefilled { background:#fffbeb; border-color:#fbbf24; }
-.prefilled-note { font-size:0.7rem; color:#92400e; margin-top:2px; }
-
-.collapse-toggle {
-cursor:pointer; user-select:none; display:flex; align-items:center;
-gap:8px; padding:8px 0; font-weight:600; color:var(--accent2);
-}
-.collapse-toggle::before { content:'▸'; transition:transform 0.2s; }
-.collapse-toggle.open::before { transform:rotate(90deg); }
-.collapse-content { display:none; padding-left:16px; }
-.collapse-content.open { display:block; }
+.step-title { font-size:22px; color:var(--white); margin-bottom:6px; }
+.step-desc { color:var(--text2); font-size:14px; margin-bottom:24px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:20px; }
+.card-title { font-size:16px; font-weight:600; color:var(--accent2); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.card-title .badge { background:var(--accent); color:#fff; font-size:11px; padding:2px 8px; border-radius:10px; }
+.card-title .badge.locked { background:var(--red); }
+.row { display:grid; gap:16px; margin-bottom:16px; }
+.row.c2 { grid-template-columns:1fr 1fr; }
+.row.c3 { grid-template-columns:1fr 1fr 1fr; }
+.row.c4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+@media(max-width:768px) { .row.c2,.row.c3,.row.c4 { grid-template-columns:1fr; } }
+label { display:block; font-size:13px; color:var(--text2); margin-bottom:4px; }
+input,select,textarea { width:100%; padding:10px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; outline:none; transition:border-color .2s; }
+input:focus,select:focus,textarea:focus { border-color:var(--accent); }
+input[readonly] { opacity:.7; cursor:default; }
+textarea { resize:vertical; min-height:80px; }
+.calc-field { background:var(--bg); border-color:var(--accent); color:var(--green); font-weight:600; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { background:var(--surface2); color:var(--accent2); padding:10px 8px; text-align:left; font-weight:600; position:sticky; top:0; }
+td { padding:8px; border-bottom:1px solid var(--border); }
+td input { padding:6px 8px; font-size:13px; }
+.table-scroll { overflow-x:auto; max-height:500px; overflow-y:auto; }
+.btn-row { display:flex; gap:12px; justify-content:space-between; margin-top:30px; padding-top:20px; border-top:1px solid var(--border); flex-wrap:wrap; }
+.btn { padding:12px 28px; border-radius:8px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { background:var(--accent2); }
+.btn-secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn-secondary:hover { background:var(--border); }
+.btn-success { background:var(--green); color:#fff; }
+.btn-danger { background:var(--red); color:#fff; }
+.autosave-indicator { position:fixed; top:16px; right:16px; padding:6px 14px; border-radius:20px; font-size:12px; background:var(--surface); border:1px solid var(--border); color:var(--text2); z-index:100; transition:all .3s; }
+.autosave-indicator.saving { border-color:var(--orange); color:var(--orange); }
+.autosave-indicator.saved { border-color:var(--green); color:var(--green); }
+.tabs { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+.tab { padding:8px 16px; border-radius:8px 8px 0 0; background:var(--surface2); color:var(--text2); cursor:pointer; font-size:13px; border:1px solid var(--border); border-bottom:none; transition:all .2s; }
+.tab.active { background:var(--surface); color:var(--accent2); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+.chart-container { position:relative; height:300px; margin:16px 0; }
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:20px; }
+.kpi-card { background:var(--surface2); border-radius:10px; padding:16px; text-align:center; }
+.kpi-value { font-size:28px; font-weight:700; color:var(--green); }
+.kpi-label { font-size:12px; color:var(--text2); margin-top:4px; }
+.responsibility-matrix td { vertical-align:top; }
+.task-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; margin:2px; }
+.task-tag.plan { background:#6c5ce733; color:var(--accent2); }
+.task-tag.progress { background:#fdcb6e33; color:var(--orange); }
+.task-tag.done { background:#00b89433; color:var(--green); }
+.task-tag.overdue { background:#e1705533; color:var(--red); }
+.status-select { padding:4px 8px; font-size:12px; width:auto; }
+.collapsible { cursor:pointer; user-select:none; }
+.collapsible::before { content:'▸ '; transition:transform .2s; }
+.collapsible.open::before { content:'▾ '; }
+.collapsible-body { display:none; padding-top:12px; }
+.collapsible.open + .collapsible-body { display:block; }
+.tooltip { position:relative; }
+.tooltip:hover::after { content:attr(data-tip); position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:var(--surface2); color:var(--text); padding:6px 10px; border-radius:6px; font-size:12px; white-space:nowrap; z-index:10; border:1px solid var(--border); }
 </style>
 </head>
 <body>
-
-<header class="app-header">
-<h1>NORT Apart-Hotel — Дорожная карта 2026</h1>
-<p>Интерактивный инструмент подготовки стратегической сессии</p>
+<div class="autosave-indicator" id="saveIndicator">Автосохранение</div>
+<div class="app">
+<div class="header">
+  <h1>NORT КМ — Дорожная карта 2026</h1>
+  <p>Стратегическая сессия отдела маркетинга • Каркас Монолит</p>
+</div>
 <div class="progress-bar" id="progressBar"></div>
-</header>
-
-<div class="container">
-
-<!-- ======== STEP 0: INTRO ======== -->
-<div class="step active" id="step-0">
-<div class="card">
-<h2>Добро пожаловать</h2>
-<p class="subtitle">Этот инструмент поможет собрать все данные от команды и сгенерировать дорожную карту на 2026 год</p>
-<p style="margin:16px 0; font-size:0.9rem;">
-Заполняйте шаг за шагом. Данные, которые мы уже обсудили, предзаполнены (подсвечены жёлтым). Каждый сотрудник заполняет свой блок. В конце система сгенерирует:
-</p>
-<ul style="margin:12px 0 12px 20px; font-size:0.9rem;">
-<li>Помесячный план действий на год</li>
-<li>Детальный календарь на 3 ближайших месяца</li>
-<li>KPI и контрольные точки по каждому направлению</li>
-<li>Ожидаемый финансовый результат</li>
-</ul>
-<p style="font-size:0.85rem; color:var(--muted);">Данные сохраняются в браузере автоматически. Можно закрыть и вернуться.</p>
-</div>
-<div class="btn-row">
-<button class="btn btn-primary" onclick="goStep(1)">Начать →</button>
-</div>
-</div>
-
-<!-- ======== STEP 1: ОБЩИЕ ДАННЫЕ ======== -->
-<div class="step" id="step-1">
-<div class="card">
-<h2>Шаг 1: Общие данные и цели</h2>
-<p class="subtitle">Заполняет: Катя Сивкова (руководитель)</p>
-
-<div class="section-title">Факт 2025</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Выручка за год, ₽</label>
-<input type="text" id="fact_revenue" class="prefilled" value="196 453 103">
-<div class="prefilled-note">Предзаполнено из Бново</div>
-</div>
-<div class="form-group">
-<label>RevPAR факт, ₽</label>
-<input type="text" id="fact_revpar" class="prefilled" value="5 612">
-</div>
-<div class="form-group">
-<label>ADR факт, ₽</label>
-<input type="text" id="fact_adr" class="prefilled" value="6 851">
-</div>
-</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Загрузка факт, %</label>
-<input type="text" id="fact_occ" class="prefilled" value="81">
-</div>
-<div class="form-group">
-<label>Кол-во номеров</label>
-<input type="text" id="rooms" class="prefilled" value="112">
-</div>
-<div class="form-group">
-<label>Бюджет маркетинга/мес (с ФОТ), ₽</label>
-<input type="text" id="budget_monthly" class="prefilled" value="440 000">
-</div>
-</div>
-
-<div class="section-title">Целевой RevPAR 2026 по месяцам</div>
-<div class="hint" style="margin-bottom:8px;">Предзаполнено из вашего плана. Средний целевой: 6 100 ₽</div>
-<div class="grid-12 month-grid">
-<div class="form-group"><label>Янв</label><input type="text" id="revpar_1" class="prefilled" value="4600"></div>
-<div class="form-group"><label>Фев</label><input type="text" id="revpar_2" class="prefilled" value="3310"></div>
-<div class="form-group"><label>Мар</label><input type="text" id="revpar_3" class="prefilled" value="4180"></div>
-<div class="form-group"><label>Апр</label><input type="text" id="revpar_4" class="prefilled" value="5020"></div>
-<div class="form-group"><label>Май</label><input type="text" id="revpar_5" class="prefilled" value="10410"></div>
-<div class="form-group"><label>Июн</label><input type="text" id="revpar_6" class="prefilled" value="8990"></div>
-<div class="form-group"><label>Июл</label><input type="text" id="revpar_7" class="prefilled" value="8990"></div>
-<div class="form-group"><label>Авг</label><input type="text" id="revpar_8" class="prefilled" value="9690"></div>
-<div class="form-group"><label>Сен</label><input type="text" id="revpar_9" class="prefilled" value="6150"></div>
-<div class="form-group"><label>Окт</label><input type="text" id="revpar_10" class="prefilled" value="5260"></div>
-<div class="form-group"><label>Ноя</label><input type="text" id="revpar_11" class="prefilled" value="4510"></div>
-<div class="form-group"><label>Дек</label><input type="text" id="revpar_12" class="prefilled" value="2690"></div>
-</div>
-
-<div class="section-title">Целевая выручка по месяцам (авторасчёт)</div>
-<div class="grid-12 month-grid" id="revenueTargets"></div>
-
-<div class="section-title">Бюджет маркетинга — текущее распределение</div>
-<div class="hint" style="margin-bottom:8px;">Как сейчас делится бюджет ~440 тыс/мес (без ФОТ, только расходы ~185–190 тыс)</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Яндекс.Директ, ₽/мес</label>
-<input type="text" id="budget_direct" class="prefilled" value="121 200">
-</div>
-<div class="form-group">
-<label>Яндекс.Карты, ₽/мес</label>
-<input type="text" id="budget_ymaps" class="prefilled" value="15 000">
-</div>
-<div class="form-group">
-<label>2ГИС, ₽/мес</label>
-<input type="text" id="budget_2gis" value="47 760">
-<div class="prefilled-note">С января 2026</div>
-</div>
-</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Коллтрекинг, ₽/мес</label>
-<input type="text" id="budget_calltrack" class="prefilled" value="13 300">
-</div>
-<div class="form-group">
-<label>Полиграфия, ₽/мес (средн.)</label>
-<input type="text" id="budget_print" class="prefilled" value="10 864">
-</div>
-<div class="form-group">
-<label>Прочее (Wappi, CRM и т.д.), ₽/мес</label>
-<input type="text" id="budget_other" class="prefilled" value="19 800">
-</div>
-</div>
-
-<div class="section-title">Комиссии OTA за 2025</div>
-<div class="grid-2">
-<div class="form-group">
-<label>Общая сумма комиссий OTA за 2025, ₽</label>
-<input type="text" id="ota_commission_total" placeholder="Посчитай из Бново">
-<div class="hint">Оценочно ~4,5–5,3 млн ₽ (нужна точная цифра)</div>
-</div>
-<div class="form-group">
-<label>Доля OTA в выручке 2025, %</label>
-<input type="text" id="ota_share" placeholder="Оценочно ~29-30%">
-</div>
-</div>
-
-<div class="section-title">Главные цели на 2026</div>
-<div class="form-group">
-<label>Цель 1: RevPAR</label>
-<input type="text" id="goal_revpar" class="prefilled" value="Довести средний RevPAR до 6 100 ₽ (рост с 5 612)">
-</div>
-<div class="form-group">
-<label>Цель 2: Доля прямых бронирований</label>
-<input type="text" id="goal_direct" placeholder="Например: Увеличить с 40% до 50%">
-</div>
-<div class="form-group">
-<label>Цель 3: Снижение зависимости от OTA</label>
-<input type="text" id="goal_ota" placeholder="Например: Снизить долю OTA с 30% до 22%">
-</div>
-<div class="form-group">
-<label>Цель 4 (свободная)</label>
-<input type="text" id="goal_custom" placeholder="Например: Запуск корп. направления">
-</div>
-</div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(0)">← Назад</button>
-<button class="btn btn-primary" onclick="goStep(2)">Далее: Диджитал →</button>
-</div>
-</div>
-
-<!-- ======== STEP 2: ДИДЖИТАЛ ======== -->
-<div class="step" id="step-2">
-<div class="card">
-<h2>Шаг 2: Диджитал-маркетинг</h2>
-<p class="subtitle">Заполняет: Влад Большаков</p>
-
-<div class="section-title">Яндекс.Директ — факт за ноябрь</div>
-<div class="grid-4">
-<div class="form-group">
-<label>Расход, ₽</label>
-<input type="text" id="direct_spend" class="prefilled" value="121 200">
-</div>
-<div class="form-group">
-<label>Показы</label>
-<input type="text" id="direct_impressions" class="prefilled" value="32 402">
-</div>
-<div class="form-group">
-<label>Клики</label>
-<input type="text" id="direct_clicks" class="prefilled" value="2 461">
-</div>
-<div class="form-group">
-<label>Бронирований</label>
-<input type="text" id="direct_bookings" class="prefilled" value="50">
-</div>
-</div>
-<div class="grid-3">
-<div class="form-group">
-<label>CTR, %</label>
-<input type="text" id="direct_ctr" class="prefilled" value="7.6">
-</div>
-<div class="form-group">
-<label>CR переход→бронь, %</label>
-<input type="text" id="direct_cr" class="prefilled" value="1.95">
-</div>
-<div class="form-group">
-<label>Стоимость брони, ₽</label>
-<input type="text" id="direct_cpb" class="prefilled" value="2 525">
-</div>
-</div>
-<div class="form-group">
-<label>Главные проблемы с Директом</label>
-<textarea id="direct_problems" placeholder="Что не работает? Какие кампании сливают бюджет? Какие ключи неэффективны?"></textarea>
-</div>
-<div class="form-group">
-<label>План оптимизации на фев-апр</label>
-<textarea id="direct_plan" placeholder="Что конкретно планируешь изменить? Новые кампании, минус-слова, ретаргетинг?"></textarea>
-</div>
-<div class="form-group">
-<label>Целевая стоимость брони через 3 месяца, ₽</label>
-<input type="text" id="direct_target_cpb" placeholder="Например: 1 500">
-</div>
-
-<div class="section-title">Яндекс.Карты — факт за ноябрь</div>
-<div class="grid-4">
-<div class="form-group">
-<label>Расход (подписка), ₽</label>
-<input type="text" id="ymaps_spend" class="prefilled" value="15 000">
-</div>
-<div class="form-group">
-<label>Показы карточки</label>
-<input type="text" id="ymaps_impressions" class="prefilled" value="36 206">
-</div>
-<div class="form-group">
-<label>Всего лидов (клики+звонки)</label>
-<input type="text" id="ymaps_leads" class="prefilled" value="784">
-</div>
-<div class="form-group">
-<label>Бронирований итого</label>
-<input type="text" id="ymaps_bookings" class="prefilled" value="109">
-</div>
-</div>
-<div class="form-group">
-<label>Почему теряем 83% лидов с Карт?</label>
-<textarea id="ymaps_problems" placeholder="Проблемы с обработкой звонков? Качество карточки? Отзывы?"></textarea>
-</div>
-<div class="form-group">
-<label>Целевая конверсия с Карт через 3 мес, %</label>
-<input type="text" id="ymaps_target_cr" placeholder="Сейчас 14%, цель?">
-</div>
-
-<div class="section-title">2ГИС — факт за ноябрь</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Показы</label>
-<input type="text" id="gis_impressions" class="prefilled" value="2 614">
-</div>
-<div class="form-group">
-<label>Всего бронирований</label>
-<input type="text" id="gis_bookings" class="prefilled" value="8">
-</div>
-<div class="form-group">
-<label>Расход, ₽</label>
-<input type="text" id="gis_spend" value="0">
-<div class="hint">С января подключён за 47 760/мес</div>
-</div>
-</div>
-<div class="form-group">
-<label>Ожидания от 2ГИС на фев-апр</label>
-<textarea id="gis_plan" placeholder="Что ожидаем за 47 760/мес? Как трекаем?"></textarea>
-</div>
-
-<div class="section-title">Google Карты — факт за ноябрь</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Показы</label>
-<input type="text" id="gmaps_impressions" class="prefilled" value="13 524">
-</div>
-<div class="form-group">
-<label>Бронирований</label>
-<input type="text" id="gmaps_bookings" class="prefilled" value="34">
-</div>
-<div class="form-group">
-<label>Расход, ₽</label>
-<input type="text" id="gmaps_spend" class="prefilled" value="0">
-</div>
-</div>
-
-<div class="section-title">Сайт и модуль бронирования</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Трафик на сайт/мес</label>
-<input type="text" id="site_traffic" placeholder="Из Яндекс.Метрики">
-</div>
-<div class="form-group">
-<label>Бронирований через модуль (ноябрь)</label>
-<input type="text" id="site_bookings" class="prefilled" value="398">
-</div>
-<div class="form-group">
-<label>Конверсия трафик→бронь, %</label>
-<input type="text" id="site_cr" placeholder="Авторасчёт после заполнения трафика">
-</div>
-</div>
-<div class="form-group">
-<label>Основные проблемы сайта / модуля бронирования</label>
-<textarea id="site_problems" placeholder="Скорость загрузки? Мобильная версия? UX модуля?"></textarea>
-</div>
-
-<div class="section-title">Email-маркетинг и рассылки</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Размер базы email</label>
-<input type="text" id="email_base" placeholder="Сколько контактов?">
-</div>
-<div class="form-group">
-<label>Кол-во рассылок за послед. 3 мес</label>
-<input type="text" id="email_sent" placeholder="">
-</div>
-<div class="form-group">
-<label>Open rate средний, %</label>
-<input type="text" id="email_or" placeholder="">
-</div>
-</div>
-<div class="form-group">
-<label>Wappi.pro (1 800/мес) — что делает и какой результат?</label>
-<textarea id="wappi_status" placeholder="Рассылки в WhatsApp? Автоответы? Результат?"></textarea>
-</div>
-
-<div class="section-title">Задачи Влада — конкретика с датами</div>
-<div class="form-group">
-<label>Что готов запустить/изменить в ближайшие 2 недели?</label>
-<textarea id="vlad_2weeks" placeholder="Конкретные задачи с датами"></textarea>
-</div>
-<div class="form-group">
-<label>Что запустить в марте?</label>
-<textarea id="vlad_march" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Что запустить в апреле (подготовка к сезону)?</label>
-<textarea id="vlad_april" placeholder=""></textarea>
-</div>
-</div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(1)">← Назад</button>
-<button class="btn btn-primary" onclick="goStep(3)">Далее: Продуктовый маркетинг →</button>
-</div>
-</div>
-
-<!-- ======== STEP 3: ПРОДУКТОВЫЙ ======== -->
-<div class="step" id="step-3">
-<div class="card">
-<h2>Шаг 3: Продуктовый маркетинг и работа с гостями</h2>
-<p class="subtitle">Заполняет: Соколов Илья</p>
-
-<div class="section-title">Отзывы — текущие рейтинги</div>
-<div class="hint" style="margin-bottom:12px;">Предзаполнено из ноябрьских данных. Обнови если изменилось.</div>
-<div class="grid-4">
-<div class="form-group"><label>Яндекс.Карты</label><input type="text" id="rev_ymaps" class="prefilled" value="5.0 (1364 отзыва)"></div>
-<div class="form-group"><label>Google Maps</label><input type="text" id="rev_gmaps" class="prefilled" value="4.9 (280)"></div>
-<div class="form-group"><label>2ГИС</label><input type="text" id="rev_2gis" class="prefilled" value="4.9 (368)"></div>
-<div class="form-group"><label>Островок</label><input type="text" id="rev_ostrovok" class="prefilled" value="8.9 (105)"></div>
-</div>
-<div class="grid-4">
-<div class="form-group"><label>Суточно.ру</label><input type="text" id="rev_sutochno" class="prefilled" value="9.7 (138)"></div>
-<div class="form-group"><label>Ozon Travel</label><input type="text" id="rev_ozon" class="prefilled" value="4.6 (262)"></div>
-<div class="form-group"><label>Авито</label><input type="text" id="rev_avito" class="prefilled" value="4.8 (138)"></div>
-<div class="form-group"><label>Яндекс.Путешествия</label><input type="text" id="rev_yp" class="prefilled" value="5.0 (147)"></div>
-</div>
-<div class="form-group">
-<label>Топ-5 повторяющихся жалоб</label>
-<textarea id="complaints_top5" placeholder="Что пишут в негативных отзывах? Конкретные формулировки."></textarea>
-</div>
-<div class="form-group">
-<label>Топ-5 повторяющихся похвал</label>
-<textarea id="praise_top5" placeholder="За что хвалят чаще всего?"></textarea>
-</div>
-<div class="form-group">
-<label>Ozon Travel (4.6) и Авито (4.8) — почему низкие? Что делаем?</label>
-<textarea id="low_ratings_plan" placeholder=""></textarea>
-</div>
-
-<div class="section-title">Программа лояльности</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Бронирований по программе</label>
-<input type="text" id="loyalty_bookings" class="prefilled" value="5">
-</div>
-<div class="form-group">
-<label>Выручка по программе, ₽</label>
-<input type="text" id="loyalty_revenue" class="prefilled" value="29 799">
-</div>
-<div class="form-group">
-<label>Кол-во участников программы</label>
-<input type="text" id="loyalty_members" placeholder="Сколько зарегистрировано?">
-</div>
-</div>
-<div class="form-group">
-<label>Почему программа не работает? Что предлагаешь?</label>
-<textarea id="loyalty_plan" placeholder="Перезапуск? Новые условия? Интеграция с рассылками? Конкретный план с датами."></textarea>
-</div>
-
-<div class="section-title">Корпоративные клиенты</div>
-<div class="grid-3">
-<div class="form-group">
-<label>Кол-во корп. бронирований за 2025</label>
-<input type="text" id="corp_bookings" placeholder="Данных нет — нужно собрать">
-</div>
-<div class="form-group">
-<label>Выручка от корп., ₽</label>
-<input type="text" id="corp_revenue" placeholder="">
-</div>
-<div class="form-group">
-<label>Кол-во действующих договоров</label>
-<input type="text" id="corp_contracts" placeholder="">
-</div>
-</div>
-<div class="form-group">
-<label>План по развитию корп. направления (особенно на несезон)</label>
-<textarea id="corp_plan" placeholder="Работа с командировочными, партнёрства с предприятиями, выход на тендеры?"></textarea>
-</div>
-
-<div class="section-title">Портрет гостя</div>
-<div class="grid-2">
-<div class="form-group">
-<label>Средний чек</label>
-<input type="text" id="avg_check" class="prefilled" value="9 300 ₽">
-</div>
-<div class="form-group">
-<label>Средняя длительность, ночей</label>
-<input type="text" id="avg_nights" class="prefilled" value="2.1">
-</div>
-</div>
-<div class="grid-2">
-<div class="form-group">
-<label>Доля повторных гостей, %</label>
-<input type="text" id="repeat_rate" placeholder="Из АМО/Бново">
-</div>
-<div class="form-group">
-<label>Среднее за сколько дней до заезда бронируют</label>
-<input type="text" id="booking_window" placeholder="Данных нет — нужно посчитать">
-</div>
-</div>
-<div class="form-group">
-<label>ТОП-5 городов/регионов гостей</label>
-<textarea id="guest_geo" placeholder="Откуда едут?"></textarea>
-</div>
-
-<div class="section-title">Доп. услуги и средний чек</div>
-<div class="form-group">
-<label>Какие доп. услуги есть и продаются?</label>
-<textarea id="upsell_current" placeholder="Трансфер, экскурсии, поздний выезд, завтраки..."></textarea>
-</div>
-<div class="form-group">
-<label>Какие доп. услуги можно внедрить за 3 месяца?</label>
-<textarea id="upsell_plan" placeholder="Конкретные предложения с оценкой потенциала"></textarea>
-</div>
-
-<div class="section-title">Анализ OTA-каналов по эффективности</div>
-<div class="hint" style="margin-bottom:12px;">Оцени каждый канал: оставлять / усилить / сократить / отключить</div>
-
-<div id="otaAnalysis">
-<div class="ota-row header">
-<span>Канал</span><span>Выручка (3 мес)</span><span>Комиссия</span><span>Конверсия</span><span>Оценка</span><span>Действие</span>
-</div>
-</div>
-
-<div class="section-title">Конкуренты</div>
-<div class="form-group">
-<label>Топ-5 конкурентов (название, цены, рейтинги, преимущества/слабости)</label>
-<textarea id="competitors" placeholder="1. ... &#10;2. ... &#10;3. ..."></textarea>
-</div>
-<div class="form-group">
-<label>Наше УТП — как мы его формулируем сейчас?</label>
-<textarea id="utp" placeholder=""></textarea>
-</div>
-
-<div class="section-title">Задачи Ильи — конкретика с датами</div>
-<div class="form-group">
-<label>Ближайшие 2 недели</label>
-<textarea id="ilya_2weeks" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Март</label>
-<textarea id="ilya_march" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Апрель (подготовка к сезону)</label>
-<textarea id="ilya_april" placeholder=""></textarea>
-</div>
-</div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(2)">← Назад</button>
-<button class="btn btn-primary" onclick="goStep(4)">Далее: Ассистент →</button>
-</div>
-</div>
-
-<!-- ======== STEP 4: АССИСТЕНТ ======== -->
-<div class="step" id="step-4">
-<div class="card">
-<h2>Шаг 4: OTA-карточки, визуал, полиграфия</h2>
-<p class="subtitle">Заполняет: Катя Утенкова</p>
-
-<div class="section-title">Аудит OTA-карточек</div>
-<div class="hint" style="margin-bottom:12px;">По каждой площадке оцени состояние</div>
-
-<div id="otaAudit"></div>
-
-<div class="section-title">Отзывы — оперативный статус</div>
-<div class="grid-2">
-<div class="form-group">
-<label>Площадки с неотвеченными отзывами</label>
-<textarea id="unanswered_reviews" placeholder="Где есть неотвеченные?"></textarea>
-</div>
-<div class="form-group">
-<label>Средняя скорость ответа на отзыв</label>
-<input type="text" id="review_speed" placeholder="Например: 24 часа">
-</div>
-</div>
-
-<div class="section-title">Фотоконтент</div>
-<div class="grid-2">
-<div class="form-group">
-<label>Дата последней фотосессии</label>
-<input type="text" id="last_photo" class="prefilled" value="Декабрь 2025 (3 объекта, 9 000 ₽)">
-</div>
-<div class="form-group">
-<label>Все категории номеров покрыты?</label>
-<select id="photo_complete">
-<option value="">Выбери</option>
-<option value="yes">Да, всё актуально</option>
-<option value="partial">Частично, нужно доснять</option>
-<option value="no">Нет, критично обновить</option>
-</select>
-</div>
-</div>
-<div class="form-group">
-<label>Что нужно переснять / дополнить?</label>
-<textarea id="photo_needs" placeholder="Конкретные категории, ракурсы, общие зоны"></textarea>
-</div>
-
-<div class="section-title">Полиграфия</div>
-<div class="form-group">
-<label>Что есть сейчас (буклеты, карточки, навигация)</label>
-<textarea id="print_current" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Что нужно создать/обновить на ближайшие 3 месяца</label>
-<textarea id="print_needs" placeholder=""></textarea>
-</div>
-
-<div class="section-title">Задачи Кати У. — конкретика с датами</div>
-<div class="form-group">
-<label>Ближайшие 2 недели</label>
-<textarea id="katya_u_2weeks" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Март</label>
-<textarea id="katya_u_march" placeholder=""></textarea>
-</div>
-<div class="form-group">
-<label>Апрель</label>
-<textarea id="katya_u_april" placeholder=""></textarea>
-</div>
-</div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(3)">← Назад</button>
-<button class="btn btn-primary" onclick="goStep(5)">Далее: Ценообразование →</button>
-</div>
-</div>
-
-<!-- ======== STEP 5: ЦЕНООБРАЗОВАНИЕ ======== -->
-<div class="step" id="step-5">
-<div class="card">
-<h2>Шаг 5: Ценообразование и стратегия каналов</h2>
-<p class="subtitle">Заполняет: Катя Сивкова</p>
-
-<div class="section-title">ADR факт 2025 по месяцам</div>
-<div class="hint" style="margin-bottom:8px;">Заполни из Бново — нужно для анализа ценовой стратегии</div>
-<div class="grid-12 month-grid">
-<div class="form-group"><label>Янв</label><input type="text" id="adr_1" placeholder=""></div>
-<div class="form-group"><label>Фев</label><input type="text" id="adr_2" placeholder=""></div>
-<div class="form-group"><label>Мар</label><input type="text" id="adr_3" placeholder=""></div>
-<div class="form-group"><label>Апр</label><input type="text" id="adr_4" placeholder=""></div>
-<div class="form-group"><label>Май</label><input type="text" id="adr_5" placeholder=""></div>
-<div class="form-group"><label>Июн</label><input type="text" id="adr_6" placeholder=""></div>
-<div class="form-group"><label>Июл</label><input type="text" id="adr_7" placeholder=""></div>
-<div class="form-group"><label>Авг</label><input type="text" id="adr_8" placeholder=""></div>
-<div class="form-group"><label>Сен</label><input type="text" id="adr_9" placeholder=""></div>
-<div class="form-group"><label>Окт</label><input type="text" id="adr_10" placeholder=""></div>
-<div class="form-group"><label>Ноя</label><input type="text" id="adr_11" placeholder=""></div>
-<div class="form-group"><label>Дек</label><input type="text" id="adr_12" placeholder=""></div>
-</div>
-
-<div class="section-title">Загрузка факт 2025 по месяцам, %</div>
-<div class="grid-12 month-grid">
-<div class="form-group"><label>Янв</label><input type="text" id="occ_1" placeholder=""></div>
-<div class="form-group"><label>Фев</label><input type="text" id="occ_2" placeholder=""></div>
-<div class="form-group"><label>Мар</label><input type="text" id="occ_3" placeholder=""></div>
-<div class="form-group"><label>Апр</label><input type="text" id="occ_4" placeholder=""></div>
-<div class="form-group"><label>Май</label><input type="text" id="occ_5" placeholder=""></div>
-<div class="form-group"><label>Июн</label><input type="text" id="occ_6" placeholder=""></div>
-<div class="form-group"><label>Июл</label><input type="text" id="occ_7" placeholder=""></div>
-<div class="form-group"><label>Авг</label><input type="text" id="occ_8" placeholder=""></div>
-<div class="form-group"><label>Сен</label><input type="text" id="occ_9" placeholder=""></div>
-<div class="form-group"><label>Окт</label><input type="text" id="occ_10" placeholder=""></div>
-<div class="form-group"><label>Ноя</label><input type="text" id="occ_11" placeholder=""></div>
-<div class="form-group"><label>Дек</label><input type="text" id="occ_12" placeholder=""></div>
-</div>
-
-<div class="section-title">Ценовая стратегия</div>
-<div class="form-group">
-<label>Используется ли динамическое ценообразование?</label>
-<select id="dynamic_pricing">
-<option value="">Выбери</option>
-<option value="yes">Да, полноценное</option>
-<option value="partial">Частично (ручное, по ощущениям)</option>
-<option value="no">Нет, фиксированные тарифы</option>
-</select>
-</div>
-<div class="form-group">
-<label>Есть ли потенциал роста ADR? За счёт чего?</label>
-<textarea id="adr_growth" placeholder="Улучшение номеров? Доп. услуги в тарифе? Рост рынка? Конкурентный анализ показывает, что мы ниже рынка?"></textarea>
-</div>
-
-<div class="section-title">Стратегия каналов продаж</div>
-<div class="form-group">
-<label>Целевое соотношение прямые/OTA на конец 2026</label>
-<div class="grid-2">
-<div class="form-group"><label>Прямые, %</label><input type="text" id="target_direct_share" placeholder="Сейчас ~40%"></div>
-<div class="form-group"><label>OTA, %</label><input type="text" id="target_ota_share" placeholder="Сейчас ~30%"></div>
-</div>
-</div>
-<div class="form-group">
-<label>Что конкретно будем делать для перетягивания с OTA на прямые?</label>
-<textarea id="channel_shift_plan" placeholder="Бонус за прямое бронирование? Лучшая цена на сайте? Промокоды?"></textarea>
-</div>
-
-<div class="section-title">Несезон (февраль—апрель): антикризисный план</div>
-<div class="form-group">
-<label>Какие акции/спецпредложения планируются?</label>
-<textarea id="offseason_promos" placeholder="Длинные проживания со скидкой? Пакеты? Корп. тарифы?"></textarea>
-</div>
-<div class="form-group">
-<label>Какие сегменты можно привлечь в несезон?</label>
-<textarea id="offseason_segments" placeholder="Командировочные, удалёнщики, долгосрочная аренда, мероприятия?"></textarea>
-</div>
-</div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(4)">← Назад</button>
-<button class="btn btn-success" onclick="generateRoadmap()">Сгенерировать дорожную карту →</button>
-</div>
-</div>
-
-<!-- ======== STEP 6: РЕЗУЛЬТАТ ======== -->
-<div class="step" id="step-6">
-<div class="card" style="background: linear-gradient(135deg, var(--primary), var(--accent2)); color:white;">
-<h2 style="color:white;">Дорожная карта NORT 2026</h2>
-<p style="opacity:0.8;">Сгенерировано на основе введённых данных</p>
-</div>
-
-<div id="roadmapOutput"></div>
-
-<div class="btn-row">
-<button class="btn btn-secondary" onclick="goStep(5)">← Вернуться к редактированию</button>
-<button class="btn btn-primary" onclick="exportHTML()">Скачать HTML-отчёт</button>
-<button class="btn btn-success" onclick="window.print()">Печать / PDF</button>
-</div>
-</div>
-
-</div>
-
+<div id="stepsContainer"></div>
+<div class="btn-row" id="navButtons">
+  <div style="display:flex;gap:8px;">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn btn-secondary" onclick="saveToFile()">💾 Сохранить в файл</button>
+    <button class="btn btn-secondary" onclick="loadFromFile()">📂 Загрузить из файла</button>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn btn-primary" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+</div>
+<input type="file" id="fileInput" accept=".json" style="display:none" onchange="handleFileLoad(event)">
 <script>
-const TOTAL_STEPS = 7;
-const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-const MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
-const OTA_CHANNELS = [
-{id:'yp', name:'Яндекс.Путешествия', revenue:3086398, commission:0.18, bookings:388, leads:724, convLabel:'53.6%'},
-{id:'ostrovok', name:'Островок', revenue:1142118, commission:0.18, bookings:91, leads:109, convLabel:'83.5%'},
-{id:'bronevik', name:'Броневик', revenue:1063777, commission:0.20, bookings:75, leads:83, convLabel:'90.4%'},
-{id:'otello', name:'Otello', revenue:577782, commission:0.15, bookings:65, leads:70, convLabel:'92.9%'},
-{id:'ttravel', name:'Т-Путешествия', revenue:461927, commission:0.15, bookings:63, leads:67, convLabel:'94.0%'},
-{id:'avito', name:'Avito', revenue:253562, commission:0.15, bookings:51, leads:54, convLabel:'94.4%'},
-{id:'ozon', name:'Ozon Travel', revenue:247889, commission:0.15, bookings:35, leads:40, convLabel:'87.5%'},
-{id:'google', name:'Google Hotels', revenue:245541, commission:0.07, bookings:22, leads:29, convLabel:'75.9%'},
-{id:'academ', name:'Academservice', revenue:214991, commission:0.20, bookings:12, leads:15, convLabel:'80.0%'},
-{id:'101', name:'101hotels', revenue:194393, commission:0.20, bookings:28, leads:61, convLabel:'45.9%'},
-{id:'onetwo', name:'OneTwoTrip', revenue:54318, commission:0.20, bookings:9, leads:11, convLabel:'81.8%'},
-{id:'sutochno', name:'Суточно.ру', revenue:55660, commission:0.20, bookings:10, leads:11, convLabel:'90.9%'},
-{id:'zabroniruiru', name:'Забронируй.ру', revenue:31758, commission:0.21, bookings:5, leads:5, convLabel:'100%'},
+// ============================================================
+// DATA LAYER — все факты 2025, предзаполненные значения
+// ============================================================
+const FACT_2025 = {
+  revenue: 216000000,
+  revpar: 5612,
+  adr: 6851,
+  occupancy: 81,
+  rooms: 112,
+  budget_monthly: 440000,
+  fot: 240000,
+  drr_target_min: 2,
+  drr_target_max: 3,
+  revpar_target: 6100,
+  rooms_target_eoy: 150,
+  channels: {
+    yandex_maps:  { revenue: 13300000, spend: 3600000, drr: 2.7 },
+    direct:       { revenue: 16700000, spend: 1720000, drr: 10.3 },
+    seo:          { revenue: 17500000, spend: 0, drr: 0 },
+    social:       { revenue: 850000,   spend: 0, drr: 0 },
+    undefined_src:{ revenue: 53500000, spend: 0, drr: 0 }
+  },
+  monthly_skvoz: [
+    {m:'Янв 25', total:14836498, maps:1023000, direct:1654000, seo:1327000, social:78000, undef:4200000},
+    {m:'Фев 25', total:10622891, maps:612000, direct:724000, seo:891000, social:42000, undef:3100000},
+    {m:'Мар 25', total:14252780, maps:873000, direct:1289000, seo:1198000, social:67000, undef:3600000},
+    {m:'Апр 25', total:15980443, maps:1102000, direct:1543000, seo:1356000, social:89000, undef:3900000},
+    {m:'Май 25', total:27632810, maps:1890000, direct:2310000, seo:2240000, social:112000, undef:6800000},
+    {m:'Июн 25', total:23890156, maps:1650000, direct:1980000, seo:1930000, social:95000, undef:5900000},
+    {m:'Июл 25', total:28950000, maps:1780000, direct:2150000, seo:2350000, social:105000, undef:7200000},
+    {m:'Авг 25', total:27100000, maps:1620000, direct:1890000, seo:2180000, social:98000, undef:6700000},
+    {m:'Сен 25', total:18200000, maps:1150000, direct:1280000, seo:1560000, social:72000, undef:4500000},
+    {m:'Окт 25', total:15400000, maps:980000, direct:1050000, seo:1320000, social:55000, undef:3800000},
+    {m:'Ноя 25', total:12100000, maps:720000, direct:890000, seo:1040000, social:38000, undef:3000000},
+    {m:'Дек 25', total:9600000,  maps:900000, direct:940000, seo:1108000, social:0, undef:2500000}
+  ],
+  direct_monthly: [
+    {m:'Сен 24',imp:13873,click:428,ctr:3.09,spend:28239,rev:0},
+    {m:'Окт 24',imp:146060,click:5174,ctr:3.54,spend:58172,rev:251602},
+    {m:'Ноя 24',imp:54954,click:1733,ctr:3.0,spend:31563,rev:79259},
+    {m:'Дек 24',imp:341490,click:16232,ctr:5.0,spend:143771,rev:444062},
+    {m:'Янв 25',imp:391296,click:12056,ctr:3.1,spend:73709,rev:242842},
+    {m:'Фев 25',imp:245575,click:4056,ctr:1.5,spend:120245,rev:224128},
+    {m:'Мар 25',imp:354221,click:4206,ctr:1.2,spend:136348,rev:545029},
+    {m:'Апр 25',imp:558702,click:26801,ctr:4.8,spend:236327,rev:743078},
+    {m:'Май 25',imp:571511,click:33102,ctr:5.8,spend:310381,rev:916162},
+    {m:'Июн 25',imp:110218,click:5352,ctr:4.9,spend:245303,rev:978469},
+    {m:'Июл 25',imp:145123,click:7054,ctr:4.9,spend:228159,rev:1548009},
+    {m:'Авг 25',imp:43279,click:3452,ctr:8.0,spend:129024,rev:1206114},
+    {m:'Сен 25',imp:29488,click:2274,ctr:7.7,spend:80130,rev:547266},
+    {m:'Окт 25',imp:16622,click:1276,ctr:7.7,spend:58409,rev:557351},
+    {m:'Ноя 25',imp:32402,click:2461,ctr:7.6,spend:45528,rev:718745},
+    {m:'Янв 26',imp:0,click:0,ctr:0,spend:49915,rev:558309}
+  ],
+  ota: [
+    {name:'Яндекс.Путешествия', commission:18, rev2025:29800000},
+    {name:'Отелло',              commission:15, rev2025:5500000},
+    {name:'Островок',            commission:18, rev2025:5600000},
+    {name:'Т-Путешествия',       commission:15, rev2025:4500000},
+    {name:'Броневик',            commission:20, rev2025:6000000},
+    {name:'101hotels',           commission:20, rev2025:4500000},
+    {name:'OZON Travel',         commission:15, rev2025:3700000},
+    {name:'Google Hotels',       commission:7,  rev2025:2800000},
+    {name:'BookNow',             commission:21, rev2025:500000},
+    {name:'OneTwoTrip',          commission:20, rev2025:600000},
+    {name:'Avito',               commission:15, rev2025:1500000},
+    {name:'Суточно',             commission:20, rev2025:400000},
+    {name:'2ГИС→Отелло',        commission:15, rev2025:300000},
+    {name:'Академсервис',        commission:20, rev2025:7500000},
+    {name:'Алеан',               commission:20, rev2025:200000}
+  ],
+  booking_module_utm: {
+    total: 69731591,
+    bookings: 5125,
+    yandex_main: 22301686,
+    yandex_cpc: 7825773,
+    yandex_map: 2839559,
+    yandex_stock: 371293,
+    no_utm: 27657892,
+    gis2: 1352167,
+    google_maps: 5175152,
+    other: 1208069
+  },
+  ltv: { total:17313, repeat:2965, repeat_pct:17, unique_guests:21051, new_2025:12708 },
+  pricing: {
+    groups: ['A (студия 23-27м²)','B (1к 30-38м²)','C (2к 44-52м²)','D (2к 55-62м²)','E (премиум 65+м²)'],
+    seasons: {
+      low:    {label:'Несезон (Янв,Фев,Ноя,Дек)', range:'3 900 – 14 000 ₽'},
+      trans:  {label:'Переход (Мар,Апр,Окт)',      range:'4 800 – 18 900 ₽'},
+      high:   {label:'Высокий (Май,Июн,Сен)',       range:'5 000 – 24 000 ₽'},
+      peak:   {label:'Пик (Июл,Авг)',               range:'7 200 – 33 900 ₽'},
+      holiday:{label:'Праздники',                    range:'12 000 – 30 000 ₽'},
+      cipr:   {label:'CIPR (18-24 мая)',             range:'18 000 – 50 000 ₽'}
+    }
+  },
+  fund: { fixed:38, agency:73, total:111, fixed_area:1260, agency_area:2082 }
+};
+
+const KPI_2026_DEFAULT = [
+  {m:'Янв', revpar:4600, occ:63, adr:7302},
+  {m:'Фев', revpar:3310, occ:49, adr:6755},
+  {m:'Мар', revpar:4180, occ:57, adr:7333},
+  {m:'Апр', revpar:5020, occ:64, adr:7844},
+  {m:'Май', revpar:10410,occ:85, adr:12247},
+  {m:'Июн', revpar:8990, occ:78, adr:11526},
+  {m:'Июл', revpar:8990, occ:78, adr:11526},
+  {m:'Авг', revpar:9690, occ:82, adr:11817},
+  {m:'Сен', revpar:6150, occ:71, adr:8662},
+  {m:'Окт', revpar:5260, occ:66, adr:7970},
+  {m:'Ноя', revpar:4510, occ:62, adr:7274},
+  {m:'Дек', revpar:2690, occ:47, adr:5723}
 ];
 
-let currentStep = 0;
+const MONTHS_SHORT = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+const DAYS_IN_MONTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 
-function initProgressBar() {
-const bar = document.getElementById('progressBar');
-bar.innerHTML = '';
-for (let i = 0; i < TOTAL_STEPS; i++) {
-const s = document.createElement('div');
-s.className = 'progress-step';
-s.id = `prog-${i}`;
-bar.appendChild(s);
-}
-updateProgress();
-}
+// ============================================================
+// STATE — всё, что редактируется, хранится здесь
+// ============================================================
+let state = {
+  step: 0,
+  general: {
+    rooms_current: 112,
+    rooms_target: 150,
+    budget_monthly: 440000,
+    fot: 240000,
+    drr_min: 2,
+    drr_max: 3,
+    revpar_target: 6100,
+    budget_review_date: '2026-04-01',
+    team: [
+      {name:'Екатерина Симкова', role:'Директор по маркетингу'},
+      {name:'Владислав Большаков', role:'Диджитал-маркетолог'},
+      {name:'Илья Соколов', role:'Продуктовый маркетолог'},
+      {name:'Екатерина', role:'Заместитель по процессам'}
+    ]
+  },
+  kpi_2026: JSON.parse(JSON.stringify(KPI_2026_DEFAULT)),
+  channels_2026: {
+    direct_budget: [70000,70000,0,0,0,0,0,0,0,0,0,0],
+    direct_target_drr: [10,10,10,10,10,10,10,10,10,10,10,10],
+    direct_target_rev: [0,0,0,0,0,0,0,0,0,0,0,0],
+    maps_budget: [0,0,0,0,0,0,0,0,0,0,0,0],
+    calltracking: [13300,13300,13300,13300,13300,13300,13300,13300,13300,13300,13300,13300],
+    vlad_campaigns: ['','','','','','','','','','','',''],
+    vlad_problems: '',
+    vlad_proposals: '',
+    site_status: '',
+    site_launch_date: '',
+    rebrand_checklist: {ads:false,banners:false,utm:false,landings:false,ota_cards:false,print:false}
+  },
+  product_2026: {
+    ratings: {yandex:'',ostrovok:'',gis2:'',google:''},
+    top_complaints: '',
+    top_praises: '',
+    extra_services: '',
+    upsell_q1: '',
+    competitors: [{name:'',adr:'',rating:'',usp:''},{name:'',adr:'',rating:'',usp:''},{name:'',adr:'',rating:'',usp:''}],
+    rebrand_product: '',
+    problems: '',
+    proposals: ''
+  },
+  processes_2026: {
+    ota_audit: FACT_2025.ota.map(o=>({name:o.name,tariffs_ok:'',photos:'',desc:'',promos:'',note:''})),
+    reviews_unanswered: '',
+    reviews_speed: '',
+    reviews_templates: '',
+    photo_last_shoot: '',
+    photo_sufficient: '',
+    photo_needed: '',
+    rebrand_ota: {photos:false,description:false,name:false,logo:false},
+    problems: '',
+    proposals: ''
+  },
+  strategy: {
+    priorities_q1: '',
+    budget_split: [{item:'Директ',amount:''},{item:'Карты',amount:''},{item:'Коллтрекинг',amount:''},{item:'Печать/фото',amount:''},{item:'Прочее',amount:''}],
+    owner_constraints: '',
+    rebrand_date: '',
+    rebrand_external: '',
+    rebrand_internal: '',
+    site_date: '',
+    site_budget: '',
+    site_owner: '',
+    rodionova_merge: '',
+    scale_channels: '',
+    cut_channels: '',
+    test_channels: ''
+  },
+  roadmap: {
+    tasks: []
+  }
+};
+</script>
+<script>
+// ============================================================
+// STEP DEFINITIONS
+// ============================================================
+function fmt(n) { return Number(n).toLocaleString('ru-RU'); }
+function pct(n) { return Number(n).toFixed(1)+'%'; }
 
-function updateProgress() {
-for (let i = 0; i < TOTAL_STEPS; i++) {
-const el = document.getElementById(`prog-${i}`);
-el.className = 'progress-step';
-if (i < currentStep) el.classList.add('done');
-else if (i === currentStep) el.classList.add('active');
-}
-}
+function renderStep1() {
+  const g = state.general;
+  let teamRows = g.team.map((t,i)=>`
+    <div class="row c2">
+      <div><label>Имя</label><input value="${t.name}" onchange="state.general.team[${i}].name=this.value;save()"></div>
+      <div><label>Роль</label><input value="${t.role}" onchange="state.general.team[${i}].role=this.value;save()"></div>
+    </div>`).join('');
 
-function goStep(n) {
-document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-document.getElementById(`step-${n}`).classList.add('active');
-currentStep = n;
-updateProgress();
-saveData();
-window.scrollTo({top:0, behavior:'smooth'});
+  let kpiRows = state.kpi_2026.map((k,i)=>{
+    let rooms = g.rooms_current;
+    let days = DAYS_IN_MONTH[i];
+    let rev = k.revpar * rooms * days;
+    let bMin = rev * (g.drr_min/100);
+    let bMax = rev * (g.drr_max/100);
+    return `<tr>
+      <td>${k.m}</td>
+      <td><input type="number" value="${k.revpar}" onchange="state.kpi_2026[${i}].revpar=+this.value;renderCurrentStep();save()"></td>
+      <td><input type="number" value="${k.occ}" onchange="state.kpi_2026[${i}].occ=+this.value;renderCurrentStep();save()">%</td>
+      <td><input type="number" value="${k.adr}" onchange="state.kpi_2026[${i}].adr=+this.value;renderCurrentStep();save()"></td>
+      <td class="calc-field">${fmt(Math.round(rev))}</td>
+      <td class="calc-field">${fmt(Math.round(bMin))} – ${fmt(Math.round(bMax))}</td>
+    </tr>`;
+  }).join('');
 
-if (n === 1) calcRevenue();
-}
+  let totalRev = state.kpi_2026.reduce((s,k,i)=>s+k.revpar*g.rooms_current*DAYS_IN_MONTH[i],0);
 
-function calcRevenue() {
-const rooms = parseInt(stripNum(document.getElementById('rooms').value)) || 112;
-const container = document.getElementById('revenueTargets');
-container.innerHTML = '';
-for (let m = 1; m <= 12; m++) {
-const revpar = parseInt(stripNum(document.getElementById(`revpar_${m}`).value)) || 0;
-const rev = revpar * rooms * MONTH_DAYS[m-1];
-const div = document.createElement('div');
-div.className = 'form-group';
-div.innerHTML = `<label style="font-size:0.7rem;text-align:center">${MONTHS[m-1].substring(0,3)}</label>
-<input type="text" value="${formatNum(rev)}" readonly style="text-align:center;font-size:0.75rem;background:#f0fdf4;">`;
-container.appendChild(div);
-}
-}
+  return `
+  <h2 class="step-title">Шаг 1. Общие данные и цели</h2>
+  <p class="step-desc">Динамические параметры объекта — обновляйте при изменениях</p>
 
-function initOTAAnalysis() {
-const container = document.getElementById('otaAnalysis');
-OTA_CHANNELS.forEach(ch => {
-const row = document.createElement('div');
-row.className = 'ota-row';
-row.innerHTML = `
-<span style="font-weight:600;font-size:0.8rem;">${ch.name}</span>
-<span style="font-size:0.8rem;">${formatNum(ch.revenue)} ₽</span>
-<span style="font-size:0.8rem;">${(ch.commission*100).toFixed(0)}%</span>
-<span style="font-size:0.8rem;">${ch.convLabel}</span>
-<select id="ota_eval_${ch.id}" style="font-size:0.75rem;padding:4px;">
-<option value="">—</option>
-<option value="good">Эффективен</option>
-<option value="ok">Нормально</option>
-<option value="weak">Слабый</option>
-<option value="problem">Проблемный</option>
-</select>
-<select id="ota_action_${ch.id}" style="font-size:0.75rem;padding:4px;">
-<option value="">—</option>
-<option value="keep">Оставить как есть</option>
-<option value="boost">Усилить</option>
-<option value="reduce">Сократить</option>
-<option value="off">Отключить</option>
-</select>`;
-container.appendChild(row);
-});
-}
+  <div class="card">
+    <div class="card-title">Номерной фонд и бюджет</div>
+    <div class="row c4">
+      <div><label>Номеров сейчас</label><input type="number" value="${g.rooms_current}" onchange="state.general.rooms_current=+this.value;renderCurrentStep();save()"></div>
+      <div><label>Цель к концу года</label><input type="number" value="${g.rooms_target}" onchange="state.general.rooms_target=+this.value;save()"></div>
+      <div><label>Бюджет (мес, всё)</label><input type="number" value="${g.budget_monthly}" onchange="state.general.budget_monthly=+this.value;save()"></div>
+      <div><label>ФОТ</label><input type="number" value="${g.fot}" onchange="state.general.fot=+this.value;save()"></div>
+    </div>
+    <div class="row c4">
+      <div><label>Свободный бюджет</label><input class="calc-field" readonly value="${fmt(g.budget_monthly - g.fot)} ₽"></div>
+      <div><label>ДРР мин %</label><input type="number" value="${g.drr_min}" step="0.5" onchange="state.general.drr_min=+this.value;renderCurrentStep();save()"></div>
+      <div><label>ДРР макс %</label><input type="number" value="${g.drr_max}" step="0.5" onchange="state.general.drr_max=+this.value;renderCurrentStep();save()"></div>
+      <div><label>Пересмотр бюджета</label><input type="date" value="${g.budget_review_date}" onchange="state.general.budget_review_date=this.value;save()"></div>
+    </div>
+    <div class="row c2">
+      <div><label>RevPAR цель (среднегод.)</label><input type="number" value="${g.revpar_target}" onchange="state.general.revpar_target=+this.value;save()"></div>
+      <div><label>Выручка цель (расчёт)</label><input class="calc-field" readonly value="${fmt(Math.round(totalRev))} ₽"></div>
+    </div>
+  </div>
 
-function initOTAAudit() {
-const container = document.getElementById('otaAudit');
-const platforms = ['Яндекс.Путешествия','Островок','Броневик','Otello','Т-Путешествия','Ozon Travel','Google Hotels','Avito','Суточно.ру','101hotels','OneTwoTrip','Забронируй.ру','Академсервис','2ГИС'];
-platforms.forEach((p,i) => {
-const card = document.createElement('div');
-card.style.cssText = 'padding:12px 0; border-bottom:1px solid #e5e7eb;';
-card.innerHTML = `
-<div style="font-weight:600;font-size:0.85rem;margin-bottom:8px;">${p}</div>
-<div class="grid-4">
-<div class="form-group"><label style="font-size:0.7rem;">Тарифы актуальны?</label>
-<select id="audit_tariff_${i}"><option value="">—</option><option value="yes">Да</option><option value="no">Нет</option><option value="partial">Частично</option></select></div>
-<div class="form-group"><label style="font-size:0.7rem;">Фото актуальны?</label>
-<select id="audit_photo_${i}"><option value="">—</option><option value="yes">Да</option><option value="outdated">Устарели</option><option value="missing">Не хватает</option></select></div>
-<div class="form-group"><label style="font-size:0.7rem;">Описание полное?</label>
-<select id="audit_desc_${i}"><option value="">—</option><option value="yes">Да</option><option value="no">Нужно доработать</option></select></div>
-<div class="form-group"><label style="font-size:0.7rem;">Спецпредложения?</label>
-<select id="audit_promo_${i}"><option value="">—</option><option value="yes">Есть</option><option value="no">Нет</option></select></div>
-</div>`;
-container.appendChild(card);
-});
-}
+  <div class="card">
+    <div class="card-title">Команда <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px;margin-left:auto;" onclick="state.general.team.push({name:'',role:''});renderCurrentStep();save();">+ Добавить</button></div>
+    ${teamRows}
+  </div>
 
-function formatNum(n) {
-return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-function stripNum(s) {
-return s ? s.replace(/[^\d.-]/g, '') : '0';
-}
-
-function gv(id) {
-const el = document.getElementById(id);
-return el ? el.value.trim() : '';
-}
-
-function generateRoadmap() {
-goStep(6);
-const rooms = parseInt(stripNum(gv('rooms'))) || 112;
-const factRevpar = parseInt(stripNum(gv('fact_revpar'))) || 5612;
-const targetRevpar = 6100;
-const factRevenue = parseInt(stripNum(gv('fact_revenue'))) || 196453103;
-const budgetMonthly = parseInt(stripNum(gv('budget_monthly'))) || 440000;
-
-let targetRevenueYear = 0;
-let revparByMonth = [];
-for (let m = 1; m <= 12; m++) {
-const rp = parseInt(stripNum(gv(`revpar_${m}`))) || 0;
-revparByMonth.push(rp);
-targetRevenueYear += rp * rooms * MONTH_DAYS[m-1];
-}
-
-const otaCommTotal = gv('ota_commission_total') ? parseInt(stripNum(gv('ota_commission_total'))) : 5300000;
-
-let html = '';
-
-// --- KPI SUMMARY ---
-html += `<div class="card result-section">
-<h3>Ключевые показатели 2026</h3>
-<div class="grid-4" style="margin-top:16px;">
-<div class="kpi-card">
-<div class="kpi-label">RevPAR целевой</div>
-<div class="kpi-value">6 100 ₽</div>
-<div class="kpi-target">+${((6100/factRevpar-1)*100).toFixed(1)}% к факту</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">Целевая выручка</div>
-<div class="kpi-value">${formatNum(targetRevenueYear)} ₽</div>
-<div class="kpi-target">${targetRevenueYear > factRevenue ? '+' : ''}${((targetRevenueYear/factRevenue-1)*100).toFixed(1)}% к факту</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">Бюджет маркетинга/год</div>
-<div class="kpi-value">${formatNum(budgetMonthly*12)} ₽</div>
-<div class="kpi-target">${(budgetMonthly*12/targetRevenueYear*100).toFixed(1)}% от целевой выручки</div>
-</div>
-<div class="kpi-card">
-<div class="kpi-label">Экономия OTA-комиссий (цель)</div>
-<div class="kpi-value">~${formatNum(otaCommTotal*0.15)} ₽</div>
-<div class="kpi-target">При снижении OTA-доли на 5%</div>
-</div>
-</div>
-</div>`;
-
-// --- GOALS ---
-html += `<div class="card result-section">
-<h3>Стратегические цели</h3>
-<div style="display:grid; gap:12px; margin-top:12px;">
-<div style="padding:12px; background:#f0fdf4; border-radius:8px; border-left:4px solid var(--success);">
-<strong>Цель 1:</strong> ${gv('goal_revpar') || `RevPAR ${factRevpar} → ${targetRevpar} ₽`}
-</div>
-<div style="padding:12px; background:#eff6ff; border-radius:8px; border-left:4px solid #3b82f6;">
-<strong>Цель 2:</strong> ${gv('goal_direct') || 'Рост доли прямых бронирований'}
-</div>
-<div style="padding:12px; background:#fef3c7; border-radius:8px; border-left:4px solid #f59e0b;">
-<strong>Цель 3:</strong> ${gv('goal_ota') || 'Снижение зависимости от OTA'}
-</div>
-${gv('goal_custom') ? `<div style="padding:12px; background:#fce7f3; border-radius:8px; border-left:4px solid #ec4899;">
-<strong>Цель 4:</strong> ${gv('goal_custom')}
-</div>` : ''}
-</div>
-</div>`;
-
-// --- REVENUE PLAN ---
-html += `<div class="card result-section">
-<h3>План выручки по месяцам</h3>
-<table class="roadmap-table">
-<tr><th>Месяц</th><th>RevPAR, ₽</th><th>Дней</th><th>Целевая выручка</th><th>Приоритет</th></tr>`;
-for (let m = 0; m < 12; m++) {
-const rev = revparByMonth[m] * rooms * MONTH_DAYS[m];
-const priority = revparByMonth[m] < 4500 ? '<span class="tag tag-red">Несезон</span>' :
-revparByMonth[m] < 6500 ? '<span class="tag tag-yellow">Переходный</span>' :
-'<span class="tag tag-green">Высокий сезон</span>';
-html += `<tr><td><strong>${MONTHS[m]}</strong></td><td>${formatNum(revparByMonth[m])}</td><td>${MONTH_DAYS[m]}</td><td>${formatNum(rev)} ₽</td><td>${priority}</td></tr>`;
-}
-html += `<tr style="font-weight:700;background:#f0fdf4;"><td>ИТОГО</td><td>${formatNum(targetRevpar)}</td><td>365</td><td>${formatNum(targetRevenueYear)} ₽</td><td></td></tr>`;
-html += `</table></div>`;
-
-// --- DETAILED Q1 ROADMAP ---
-html += `<div class="card result-section">
-<h3>Детальный план: Февраль — Апрель 2026</h3>`;
-
-const q1plan = [
-{
-month: 'Февраль 2026',
-tag: 'tag-red',
-tagText: 'Несезон · RevPAR 3 310',
-tasks: [
-{task: 'Аудит и оптимизация Яндекс.Директ: анализ ключей, минус-слова, снижение CPB с 2 525 до 2 000 ₽', resp: 'Влад', kpi: 'CPB ≤ 2 000 ₽', deadline: '28.02'},
-{task: 'Запуск 2ГИС: контроль первых результатов, настройка трекинга', resp: 'Влад', kpi: '≥ 15 бронирований', deadline: '28.02'},
-{task: 'Оптимизация карточки Яндекс.Карты: обновить фото, акции, ответы на отзывы', resp: 'Катя У. + Влад', kpi: 'Конверсия Карт 14% → 18%', deadline: '20.02'},
-{task: 'Полный аудит всех OTA-карточек: тарифы, фото, описания, спецпредложения', resp: 'Катя У.', kpi: 'Аудит-таблица 100% заполнена', deadline: '21.02'},
-{task: 'Собрать данные по корп. клиентам: количество, выручка, договоры', resp: 'Илья', kpi: 'Отчёт готов', deadline: '18.02'},
-{task: 'Запуск несезонных акций на OTA: длинные проживания, скидки от 3 ночей', resp: 'Илья + Катя У.', kpi: 'Акции на всех OTA', deadline: '20.02'},
-{task: 'Анализ программы лояльности: данные, причины провала, план перезапуска', resp: 'Илья', kpi: 'Документ с планом', deadline: '25.02'},
-{task: 'Ответить на все неотвеченные отзывы на всех площадках', resp: 'Катя У.', kpi: '0 неотвеченных', deadline: '17.02'},
-{task: gv('offseason_promos') ? `Несезонные промо: ${gv('offseason_promos').substring(0,100)}` : 'Запуск спецпредложений для несезона (долгое проживание, промокоды)', resp: 'Катя С.', kpi: 'Промо запущены', deadline: '18.02'},
-]
-},
-{
-month: 'Март 2026',
-tag: 'tag-yellow',
-tagText: 'Переходный · RevPAR 4 180',
-tasks: [
-{task: 'Директ: A/B тесты объявлений, запуск ретаргетинга на посетителей сайта', resp: 'Влад', kpi: 'CR +0.5%', deadline: '15.03'},
-{task: 'Запуск email/WhatsApp-рассылки по базе гостей: спецпредложения на весну', resp: 'Влад', kpi: '≥ 1 рассылка, OR > 20%', deadline: '10.03'},
-{task: gv('vlad_march') || 'Доработка сайта: проверка скорости, UX модуля бронирования', resp: 'Влад', kpi: 'Конверсия сайта +0.5%', deadline: '31.03'},
-{task: 'Обновить фото на всех OTA где по аудиту были проблемы', resp: 'Катя У.', kpi: 'Все карточки обновлены', deadline: '15.03'},
-{task: gv('ilya_march') || 'Внедрение 2-3 новых доп. услуг для роста среднего чека', resp: 'Илья', kpi: 'Доп. услуги запущены', deadline: '20.03'},
-{task: 'Активная работа с корп. сегментом: рассылка по базе предприятий, партнёрства', resp: 'Илья', kpi: '≥ 5 новых корп. контактов', deadline: '31.03'},
-{task: 'Перезапуск программы лояльности (если решение принято)', resp: 'Илья', kpi: '≥ 50 участников', deadline: '31.03'},
-{task: 'Разработка контент-плана для подготовки к высокому сезону (май)', resp: 'Катя У. + Влад', kpi: 'Контент-план готов', deadline: '25.03'},
-]
-},
-{
-month: 'Апрель 2026',
-tag: 'tag-yellow',
-tagText: 'Подготовка к сезону · RevPAR 5 020',
-tasks: [
-{task: 'Масштабирование Директа к сезону: увеличение бюджета, новые кампании по туристическим запросам', resp: 'Влад', kpi: 'Бюджет перераспределён', deadline: '10.04'},
-{task: gv('vlad_april') || 'Запуск рекламы раннего бронирования на лето', resp: 'Влад', kpi: '≥ 30 предбронирований на май-июнь', deadline: '20.04'},
-{task: 'Обновление тарифов на всех OTA на высокий сезон', resp: 'Катя У. + Катя С.', kpi: 'Тарифы обновлены на всех площадках', deadline: '05.04'},
-{task: gv('ilya_april') || 'Финальная подготовка доп. услуг к сезону', resp: 'Илья', kpi: 'Все доп. услуги работают', deadline: '15.04'},
-{task: 'Email/WhatsApp-рассылка: «Лето в NORT» — спецпредложения для прошлых гостей', resp: 'Влад', kpi: '≥ 2 рассылки, конверсия > 2%', deadline: '25.04'},
-{task: 'Фотосессия (если нужна) к сезону: обновить летние виды, общие зоны', resp: 'Катя У.', kpi: 'Новые фото на всех площадках', deadline: '20.04'},
-{task: 'Контрольная точка Q1: сверка факт vs план по всем KPI', resp: 'Катя С.', kpi: 'Отчёт + корректировка плана', deadline: '30.04'},
-]
-}
-];
-
-q1plan.forEach(q => {
-html += `<div class="timeline-item">
-<div class="tl-month">${q.month} <span class="tag ${q.tag}">${q.tagText}</span></div>
-<div class="tl-tasks">`;
-q.tasks.forEach(t => {
-html += `<div class="tl-task">
-<div><strong>${t.task}</strong><br><span class="tl-resp">${t.resp} · KPI: ${t.kpi}</span></div>
-<div style="white-space:nowrap;font-size:0.8rem;font-weight:600;color:var(--accent);">${t.deadline}</div>
-</div>`;
-});
-html += `</div></div>`;
-});
-html += `</div>`;
-
-// --- YEARLY ROADMAP ---
-html += `<div class="card result-section">
-<h3>Годовая дорожная карта (обзорно)</h3>
-<table class="roadmap-table">
-<tr><th>Период</th><th>Фокус</th><th>Ключевые инициативы</th><th>KPI периода</th></tr>
-<tr class="q-label"><td colspan="4">Q1: Январь — Март (Несезон)</td></tr>
-<tr><td>Янв-Мар</td><td>Оптимизация, корп. клиенты, подготовка базы</td>
-<td>Оптимизация Директа, запуск 2ГИС, аудит OTA, корп. продажи, перезапуск программы лояльности, несезонные акции</td>
-<td>CPB Директ ≤ 2 000 ₽<br>Конверсия Карт ≥ 18%<br>≥ 5 корп. клиентов<br>Программа лояльности перезапущена</td></tr>
-<tr class="q-label"><td colspan="4">Q2: Апрель — Июнь (Подготовка + Старт сезона)</td></tr>
-<tr><td>Апр-Июн</td><td>Масштабирование к сезону, рост ADR</td>
-<td>Масштабирование Директа, раннее бронирование, повышение тарифов, email-кампании по базе, максимальная загрузка OTA на старте</td>
-<td>RevPAR ≥ план по месяцам<br>Доля прямых ≥ 45%<br>Средний чек +5% к факту</td></tr>
-<tr class="q-label"><td colspan="4">Q3: Июль — Сентябрь (Высокий сезон)</td></tr>
-<tr><td>Июл-Сен</td><td>Максимальная загрузка, рост ADR, сбор базы</td>
-<td>Динамическое ценообразование на максимум, сбор отзывов, доп. услуги на полную мощность, активный сбор email/телефонов гостей для базы</td>
-<td>Загрузка ≥ 90%<br>ADR на пике сезона +10% к прошлому году<br>NPS / рейтинги не ниже текущих</td></tr>
-<tr class="q-label"><td colspan="4">Q4: Октябрь — Декабрь (Спад + Планирование)</td></tr>
-<tr><td>Окт-Дек</td><td>Удержание загрузки, корп. сезон, планирование 2027</td>
-<td>Осенние промо, новогодние пакеты, корп. мероприятия, рассылки по базе, аналитика года, планирование 2027</td>
-<td>Загрузка в ноябре ≥ прошл. года<br>База гостей ≥ X<br>Стратсессия 2027 проведена</td></tr>
-</table>
-</div>`;
-
-// --- CONTROL POINTS ---
-html += `<div class="card result-section">
-<h3>Контрольные точки</h3>
-<table class="roadmap-table">
-<tr><th>Дата</th><th>Что проверяем</th><th>Ответственный</th><th>Формат</th></tr>
-<tr><td><strong>28 февраля</strong></td><td>Итоги первого месяца: Директ CPB, 2ГИС первые результаты, аудит OTA завершён, корп. данные собраны</td><td>Катя С.</td><td>Мини-стратсессия 30 мин</td></tr>
-<tr><td><strong>31 марта</strong></td><td>Итоги Q1: все KPI квартала, готовность к сезону, программа лояльности, корп. pipeline</td><td>Катя С.</td><td>Стратсессия Q1 — 2 часа</td></tr>
-<tr><td><strong>30 апреля</strong></td><td>Готовность к высокому сезону: тарифы, контент, акции, бюджет масштабирован</td><td>Катя С.</td><td>Чек-лист + совещание</td></tr>
-<tr><td><strong>30 июня</strong></td><td>Итоги Q2: RevPAR vs план, доля прямых, эффект программы лояльности</td><td>Катя С.</td><td>Стратсессия Q2 — 2 часа</td></tr>
-<tr><td><strong>30 сентября</strong></td><td>Итоги высокого сезона: выручка, ADR, загрузка, база гостей, отзывы</td><td>Катя С.</td><td>Стратсессия Q3 — 2 часа</td></tr>
-<tr><td><strong>30 ноября</strong></td><td>Предварительные итоги года, планирование 2027</td><td>Катя С.</td><td>Годовая стратсессия</td></tr>
-</table>
-</div>`;
-
-// --- BUDGET ALLOCATION ---
-html += `<div class="card result-section">
-<h3>Рекомендуемое перераспределение бюджета</h3>
-<table class="roadmap-table">
-<tr><th>Статья</th><th>Сейчас (ноябрь)</th><th>% бюджета</th><th>Рекомендация</th><th>Логика</th></tr>
-<tr><td>Яндекс.Директ</td><td>121 200 ₽</td><td>64.6%</td><td>Оптимизировать, не увеличивать до снижения CPB</td><td>CPB 2 525 ₽ — дорого. Сначала оптимизация, потом масштабирование к сезону</td></tr>
-<tr><td>Яндекс.Карты</td><td>15 000 ₽</td><td>8%</td><td>Оставить или увеличить до 35 000</td><td>Цена брони 137 ₽ — в 18 раз дешевле Директа. Золотой канал.</td></tr>
-<tr><td>2ГИС</td><td>47 760 ₽</td><td>25.4% (с янв.)</td><td>Тестировать 3 месяца, оценить ROI</td><td>Новый канал. Если CPB > 1 000 ₽ через 3 мес — пересмотреть</td></tr>
-<tr><td>Коллтрекинг</td><td>13 300 ₽</td><td>7.1%</td><td>Оставить — критичен для аналитики</td><td>Без него не поймём, откуда звонки</td></tr>
-<tr><td>Полиграфия</td><td>~10 864 ₽</td><td>5.8%</td><td>По необходимости</td><td>—</td></tr>
-<tr><td>Email/WhatsApp</td><td>1 800 ₽</td><td>1%</td><td>Увеличить до 5-10 тыс, запустить регулярные рассылки</td><td>Самый дешёвый канал для повторных гостей — а их сейчас почти нет</td></tr>
-</table>
-</div>`;
-
-// --- RISKS ---
-html += `<div class="card result-section">
-<h3>Риски и что с ними делать</h3>
-<table class="roadmap-table">
-<tr><th>Риск</th><th>Вероятность</th><th>Влияние</th><th>Митигация</th></tr>
-<tr><td>Директ не оптимизируется, CPB остаётся > 2 000 ₽</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Высокое</span></td><td>Параллельно развивать Карты, email, реферальную программу</td></tr>
-<tr><td>2ГИС не даёт результат за 47 760/мес</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Среднее</span></td><td>Контрольная точка через 3 мес. Если CPB > 1 500 — отключить</td></tr>
-<tr><td>OTA снизят трафик / повысят комиссии</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Высокое</span></td><td>Наращивать прямые бронирования и базу гостей</td></tr>
-<tr><td>Несезон глубже ожидаемого</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Среднее</span></td><td>Корп. клиенты, долгие проживания, спецтарифы</td></tr>
-<tr><td>Команда не выполняет задачи в срок</td><td><span class="tag tag-red">Высокая</span></td><td><span class="tag tag-red">Высокое</span></td><td>Еженедельные 15-мин стендапы, контрольные точки</td></tr>
-</table>
-</div>`;
-
-// --- TEAM ---
-html += `<div class="card result-section">
-<h3>Зоны ответственности</h3>
-<table class="roadmap-table">
-<tr><th>Сотрудник</th><th>Зона</th><th>Ключевые KPI на Q1</th></tr>
-<tr><td><strong>Влад Большаков</strong><br>Диджитал-маркетолог</td><td>Директ, сайт, карты, ГЕО-сервисы, email, аналитика трафика</td>
-<td>CPB Директ ≤ 2 000 ₽<br>Конверсия Карт ≥ 18%<br>2ГИС: ≥ 15 броней/мес<br>≥ 2 email-рассылки/мес</td></tr>
-<tr><td><strong>Соколов Илья</strong><br>Продуктовый маркетолог</td><td>Отзывы, LTV, программа лояльности, OTA-эффективность, доп. услуги, корп. клиенты, конкуренты</td>
-<td>Рейтинги ≥ текущих<br>≥ 5 корп. контрактов<br>Программа лояльности перезапущена<br>≥ 2 новых доп. услуги</td></tr>
-<tr><td><strong>Катя Утенкова</strong><br>Ассистент</td><td>OTA-карточки, отзывы-оперативка, визуал, фото, полиграфия</td>
-<td>100% OTA-карточек актуализированы<br>0 неотвеченных отзывов<br>Фотобанк полный<br>Полиграфия обновлена</td></tr>
-<tr><td><strong>Катя Сивкова</strong><br>Руководитель</td><td>Стратегия, ценообразование, бюджет, контрольные точки, корп. стратегия</td>
-<td>RevPAR по плану<br>Бюджет в рамках 3%<br>Все контрольные точки проведены<br>Решение по каналам принято</td></tr>
-</table>
-</div>`;
-
-document.getElementById('roadmapOutput').innerHTML = html;
+  <div class="card">
+    <div class="card-title">KPI 2026 помесячно <span class="badge">авторасчёт</span></div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Месяц</th><th>RevPAR</th><th>Загрузка</th><th>ADR</th><th>Выручка</th><th>Бюджет ${g.drr_min}–${g.drr_max}%</th></tr>
+      ${kpiRows}
+    </table>
+    </div>
+  </div>`;
 }
 
-function exportHTML() {
-const content = document.getElementById('roadmapOutput').innerHTML;
-const fullHTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>NORT Дорожная карта 2026</title>
+function renderStep2() {
+  let chRows = FACT_2025.monthly_skvoz.map(r=>`<tr>
+    <td>${r.m}</td><td>${fmt(r.total)}</td><td>${fmt(r.maps)}</td>
+    <td>${fmt(r.direct)}</td><td>${fmt(r.seo)}</td><td>${fmt(r.social)}</td><td>${fmt(r.undef)}</td>
+  </tr>`).join('');
+
+  let otaRows = FACT_2025.ota.map(o=>{
+    let comm = Math.round(o.rev2025 * o.commission / 100);
+    return `<tr><td>${o.name}</td><td>${fmt(o.rev2025)}</td><td>${o.commission}%</td><td>${fmt(comm)}</td></tr>`;
+  }).join('');
+  let otaTotal = FACT_2025.ota.reduce((s,o)=>s+o.rev2025,0);
+  let otaComm = FACT_2025.ota.reduce((s,o)=>s+Math.round(o.rev2025*o.commission/100),0);
+
+  let dRows = FACT_2025.direct_monthly.map(r=>{
+    let drr = r.rev>0 ? (r.spend/r.rev*100).toFixed(1)+'%' : '—';
+    return `<tr><td>${r.m}</td><td>${fmt(r.imp)}</td><td>${fmt(r.click)}</td><td>${r.ctr}%</td><td>${fmt(r.spend)}</td><td>${fmt(r.rev)}</td><td>${drr}</td></tr>`;
+  }).join('');
+
+  let bm = FACT_2025.booking_module_utm;
+
+  return `
+  <h2 class="step-title">Шаг 2. Факт 2025 — сквозная аналитика</h2>
+  <p class="step-desc">Данные зафиксированы. Не редактируются — служат базой для решений.</p>
+
+  <div class="card">
+    <div class="card-title">Сводка по каналам <span class="badge locked">факт</span></div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.revenue)} ₽</div><div class="kpi-label">Выручка 2025</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.revpar)} ₽</div><div class="kpi-label">RevPAR факт</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.adr)} ₽</div><div class="kpi-label">ADR факт</div></div>
+      <div class="kpi-card"><div class="kpi-value">${FACT_2025.occupancy}%</div><div class="kpi-label">Загрузка факт</div></div>
+    </div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Месяц</th><th>Общая</th><th>Карты</th><th>Директ</th><th>SEO</th><th>Соцсети</th><th>Не опред.</th></tr>
+      ${chRows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">OTA — выручка и комиссии <span class="badge locked">факт</span></div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Площадка</th><th>Выручка 2025</th><th>Комиссия %</th><th>Сумма комиссии</th></tr>
+      ${otaRows}
+      <tr style="font-weight:700;border-top:2px solid var(--accent)"><td>ИТОГО OTA</td><td>${fmt(otaTotal)}</td><td>—</td><td style="color:var(--red)">${fmt(otaComm)}</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Яндекс.Директ — помесячно <span class="badge locked">факт</span></div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Месяц</th><th>Показы</th><th>Клики</th><th>CTR</th><th>Расход</th><th>Доход</th><th>ДРР</th></tr>
+      ${dRows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Модуль бронирования (UTM) <span class="badge locked">факт</span></div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.total)} ₽</div><div class="kpi-label">Всего через модуль</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.bookings)}</div><div class="kpi-label">Бронирований</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.yandex_main)} ₽</div><div class="kpi-label">Яндекс Main (карты)</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.yandex_cpc)} ₽</div><div class="kpi-label">Яндекс CPC (Директ)</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.google_maps)} ₽</div><div class="kpi-label">Google Maps</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(bm.no_utm)} ₽</div><div class="kpi-label">Без UTM</div></div>
+    </div>
+  </div>`;
+}
+
+function renderStep3() {
+  let c = state.channels_2026;
+  let rows = MONTHS_SHORT.map((m,i)=>`<tr>
+    <td>${m}</td>
+    <td><input type="number" value="${c.direct_budget[i]}" onchange="state.channels_2026.direct_budget[${i}]=+this.value;save()"></td>
+    <td><input type="number" value="${c.direct_target_drr[i]}" onchange="state.channels_2026.direct_target_drr[${i}]=+this.value;save()"></td>
+    <td><input type="number" value="${c.direct_target_rev[i]}" onchange="state.channels_2026.direct_target_rev[${i}]=+this.value;save()"></td>
+    <td><input type="number" value="${c.maps_budget[i]}" onchange="state.channels_2026.maps_budget[${i}]=+this.value;save()" placeholder="заполняется помесячно"></td>
+    <td><input type="number" value="${c.calltracking[i]}" onchange="state.channels_2026.calltracking[${i}]=+this.value;save()"></td>
+    <td><input value="${c.vlad_campaigns[i]}" onchange="state.channels_2026.vlad_campaigns[${i}]=this.value;save()" placeholder="кампании / действия"></td>
+  </tr>`).join('');
+
+  let rc = c.rebrand_checklist;
+  let checks = [
+    ['ads','Объявления Директа'],['banners','Баннеры РСЯ'],['utm','UTM-метки'],
+    ['landings','Посадочные'],['ota_cards','OTA-карточки'],['print','Печатные материалы']
+  ].map(([k,l])=>`<label style="display:flex;align-items:center;gap:8px;margin:4px 0;cursor:pointer;">
+    <input type="checkbox" ${rc[k]?'checked':''} onchange="state.channels_2026.rebrand_checklist.${k}=this.checked;save()"> ${l}</label>`).join('');
+
+  return `
+  <h2 class="step-title">Шаг 3. Диджитал-маркетинг</h2>
+  <p class="step-desc">Блок Влада — план по каналам, бюджеты, действия</p>
+
+  <div class="card">
+    <div class="card-title">Помесячный план каналов 2026</div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Мес</th><th>Директ бюдж.</th><th>Директ ДРР%</th><th>Директ доход</th><th>Карты бюдж.</th><th>Коллтрек</th><th>Кампании / действия</th></tr>
+      ${rows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Сайт и ребрендинг</div>
+    <div class="row c2">
+      <div><label>Статус нового сайта</label><textarea onchange="state.channels_2026.site_status=this.value;save()">${c.site_status}</textarea></div>
+      <div><label>Дата запуска сайта</label><input type="date" value="${c.site_launch_date}" onchange="state.channels_2026.site_launch_date=this.value;save()"></div>
+    </div>
+    <div class="card-title" style="margin-top:16px">Чеклист ребрендинга в рекламе</div>
+    ${checks}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Проблемы и предложения (Влад)</div>
+    <div class="row c2">
+      <div><label>3 главные проблемы диджитала</label><textarea onchange="state.channels_2026.vlad_problems=this.value;save()">${c.vlad_problems}</textarea></div>
+      <div><label>3 предложения на Q1</label><textarea onchange="state.channels_2026.vlad_proposals=this.value;save()">${c.vlad_proposals}</textarea></div>
+    </div>
+  </div>`;
+}
+
+function renderStep4() {
+  let p = state.product_2026;
+  let compRows = p.competitors.map((c,i)=>`<tr>
+    <td><input value="${c.name}" onchange="state.product_2026.competitors[${i}].name=this.value;save()" placeholder="Название"></td>
+    <td><input value="${c.adr}" onchange="state.product_2026.competitors[${i}].adr=this.value;save()" placeholder="ADR"></td>
+    <td><input value="${c.rating}" onchange="state.product_2026.competitors[${i}].rating=this.value;save()" placeholder="Рейтинг"></td>
+    <td><input value="${c.usp}" onchange="state.product_2026.competitors[${i}].usp=this.value;save()" placeholder="Фишки"></td>
+  </tr>`).join('');
+
+  return `
+  <h2 class="step-title">Шаг 4. Продуктовый маркетинг</h2>
+  <p class="step-desc">Блок Ильи — гости, отзывы, допуслуги, конкуренты</p>
+
+  <div class="card">
+    <div class="card-title">LTV и база <span class="badge locked">факт 2025</span></div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.ltv.total)} ₽</div><div class="kpi-label">LTV общий</div></div>
+      <div class="kpi-card"><div class="kpi-value">${FACT_2025.ltv.repeat_pct}%</div><div class="kpi-label">Доля повторных</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.ltv.unique_guests)}</div><div class="kpi-label">Уник. гостей</div></div>
+      <div class="kpi-card"><div class="kpi-value">${fmt(FACT_2025.ltv.new_2025)}</div><div class="kpi-label">Новых в 2025</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Рейтинги на площадках (актуальные)</div>
+    <div class="row c4">
+      <div><label>Яндекс</label><input value="${p.ratings.yandex}" onchange="state.product_2026.ratings.yandex=this.value;save()" placeholder="напр. 4.7"></div>
+      <div><label>Островок</label><input value="${p.ratings.ostrovok}" onchange="state.product_2026.ratings.ostrovok=this.value;save()" placeholder="напр. 4.5"></div>
+      <div><label>2ГИС</label><input value="${p.ratings.gis2}" onchange="state.product_2026.ratings.gis2=this.value;save()" placeholder="напр. 4.8"></div>
+      <div><label>Google</label><input value="${p.ratings.google}" onchange="state.product_2026.ratings.google=this.value;save()" placeholder="напр. 4.6"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Обратная связь гостей</div>
+    <div class="row c2">
+      <div><label>Топ-3 жалобы за 2025</label><textarea onchange="state.product_2026.top_complaints=this.value;save()">${p.top_complaints}</textarea></div>
+      <div><label>Топ-3 похвалы за 2025</label><textarea onchange="state.product_2026.top_praises=this.value;save()">${p.top_praises}</textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Допуслуги и Upsell</div>
+    <div class="row c2">
+      <div><label>Текущие допуслуги и выручка</label><textarea onchange="state.product_2026.extra_services=this.value;save()">${p.extra_services}</textarea></div>
+      <div><label>Upsell-план на Q1</label><textarea onchange="state.product_2026.upsell_q1=this.value;save()">${p.upsell_q1}</textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Конкурентный анализ <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px;margin-left:auto;" onclick="state.product_2026.competitors.push({name:'',adr:'',rating:'',usp:''});renderCurrentStep();save();">+ Добавить</button></div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Конкурент</th><th>ADR</th><th>Рейтинг</th><th>Фишки / USP</th></tr>
+      ${compRows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ребрендинг — продуктовый блок</div>
+    <textarea onchange="state.product_2026.rebrand_product=this.value;save()" placeholder="Что нужно обновить по продукту к ребрендингу">${p.rebrand_product}</textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Проблемы и предложения (Илья)</div>
+    <div class="row c2">
+      <div><label>3 проблемы</label><textarea onchange="state.product_2026.problems=this.value;save()">${p.problems}</textarea></div>
+      <div><label>3 предложения</label><textarea onchange="state.product_2026.proposals=this.value;save()">${p.proposals}</textarea></div>
+    </div>
+  </div>`;
+}
+
+function renderStep5() {
+  let pr = state.processes_2026;
+  let otaRows = pr.ota_audit.map((o,i)=>`<tr>
+    <td>${o.name}</td>
+    <td><select onchange="state.processes_2026.ota_audit[${i}].tariffs_ok=this.value;save()">
+      <option value="">—</option><option value="да" ${o.tariffs_ok==='да'?'selected':''}>Да</option><option value="нет" ${o.tariffs_ok==='нет'?'selected':''}>Нет</option>
+    </select></td>
+    <td><input type="number" min="1" max="5" value="${o.photos}" onchange="state.processes_2026.ota_audit[${i}].photos=this.value;save()" placeholder="1-5"></td>
+    <td><input type="number" min="1" max="5" value="${o.desc}" onchange="state.processes_2026.ota_audit[${i}].desc=this.value;save()" placeholder="1-5"></td>
+    <td><select onchange="state.processes_2026.ota_audit[${i}].promos=this.value;save()">
+      <option value="">—</option><option value="да" ${o.promos==='да'?'selected':''}>Да</option><option value="нет" ${o.promos==='нет'?'selected':''}>Нет</option>
+    </select></td>
+    <td><input value="${o.note}" onchange="state.processes_2026.ota_audit[${i}].note=this.value;save()" placeholder="примечание"></td>
+  </tr>`).join('');
+
+  let rc = pr.rebrand_ota;
+  let checks = [['photos','Фото'],['description','Описание'],['name','Название'],['logo','Логотип']].map(([k,l])=>
+    `<label style="display:flex;align-items:center;gap:8px;margin:4px 0;cursor:pointer;">
+      <input type="checkbox" ${rc[k]?'checked':''} onchange="state.processes_2026.rebrand_ota.${k}=this.checked;save()"> ${l}</label>`).join('');
+
+  return `
+  <h2 class="step-title">Шаг 5. OTA и процессы</h2>
+  <p class="step-desc">Блок Кати (зам. по процессам) — аудит карточек, отзывы, визуал</p>
+
+  <div class="card">
+    <div class="card-title">Аудит OTA-карточек</div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Площадка</th><th>Тарифы ок?</th><th>Фото (1-5)</th><th>Описание (1-5)</th><th>Акции?</th><th>Примечание</th></tr>
+      ${otaRows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Отзывы</div>
+    <div class="row c3">
+      <div><label>Неотвеченных (шт)</label><input value="${pr.reviews_unanswered}" onchange="state.processes_2026.reviews_unanswered=this.value;save()"></div>
+      <div><label>Средняя скорость ответа</label><input value="${pr.reviews_speed}" onchange="state.processes_2026.reviews_speed=this.value;save()" placeholder="напр. 2 дня"></div>
+      <div><label>Шаблоны ответов</label><select onchange="state.processes_2026.reviews_templates=this.value;save()">
+        <option value="">—</option><option value="да" ${pr.reviews_templates==='да'?'selected':''}>Есть</option><option value="нет" ${pr.reviews_templates==='нет'?'selected':''}>Нет</option>
+      </select></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Фотобанк</div>
+    <div class="row c3">
+      <div><label>Дата последней съёмки</label><input type="date" value="${pr.photo_last_shoot}" onchange="state.processes_2026.photo_last_shoot=this.value;save()"></div>
+      <div><label>Фото достаточно?</label><select onchange="state.processes_2026.photo_sufficient=this.value;save()">
+        <option value="">—</option><option value="да" ${pr.photo_sufficient==='да'?'selected':''}>Да</option><option value="нет" ${pr.photo_sufficient==='нет'?'selected':''}>Нет</option>
+      </select></div>
+      <div><label>Что нужно доснять</label><input value="${pr.photo_needed}" onchange="state.processes_2026.photo_needed=this.value;save()"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ребрендинг — OTA-чеклист</div>
+    ${checks}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Проблемы и предложения (Катя)</div>
+    <div class="row c2">
+      <div><label>3 проблемы</label><textarea onchange="state.processes_2026.problems=this.value;save()">${pr.problems}</textarea></div>
+      <div><label>3 предложения</label><textarea onchange="state.processes_2026.proposals=this.value;save()">${pr.proposals}</textarea></div>
+    </div>
+  </div>`;
+}
+
+function renderStep6() {
+  let s = state.strategy;
+  let budgetRows = s.budget_split.map((b,i)=>`<tr>
+    <td><input value="${b.item}" onchange="state.strategy.budget_split[${i}].item=this.value;save()"></td>
+    <td><input type="number" value="${b.amount}" onchange="state.strategy.budget_split[${i}].amount=this.value;save()" placeholder="₽/мес"></td>
+  </tr>`).join('');
+
+  return `
+  <h2 class="step-title">Шаг 6. Стратегические решения</h2>
+  <p class="step-desc">Блок директора — приоритеты, бюджет, ребрендинг, решения</p>
+
+  <div class="card">
+    <div class="card-title">Приоритеты Q1 (февраль–апрель)</div>
+    <textarea rows="4" onchange="state.strategy.priorities_q1=this.value;save()" placeholder="Ранжируй направления 1–5 по приоритету">${s.priorities_q1}</textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Бюджетное распределение (мес.) <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px;margin-left:auto;" onclick="state.strategy.budget_split.push({item:'',amount:''});renderCurrentStep();save();">+ Добавить</button></div>
+    <table>
+      <tr><th>Статья</th><th>Сумма ₽/мес</th></tr>
+      ${budgetRows}
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ребрендинг</div>
+    <div class="row c3">
+      <div><label>Ожидаемая дата</label><input type="date" value="${s.rebrand_date}" onchange="state.strategy.rebrand_date=this.value;save()"></div>
+      <div><label>Что от внешней компании</label><textarea onchange="state.strategy.rebrand_external=this.value;save()">${s.rebrand_external}</textarea></div>
+      <div><label>Что от нашей команды</label><textarea onchange="state.strategy.rebrand_internal=this.value;save()">${s.rebrand_internal}</textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Новый сайт</div>
+    <div class="row c3">
+      <div><label>Дата запуска</label><input type="date" value="${s.site_date}" onchange="state.strategy.site_date=this.value;save()"></div>
+      <div><label>Бюджет</label><input value="${s.site_budget}" onchange="state.strategy.site_budget=this.value;save()" placeholder="₽"></div>
+      <div><label>Ответственный</label><input value="${s.site_owner}" onchange="state.strategy.site_owner=this.value;save()"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ограничения собственников</div>
+    <textarea onchange="state.strategy.owner_constraints=this.value;save()" placeholder="Что нам нельзя / ограничения">${s.owner_constraints}</textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Объединение с Родионова</div>
+    <textarea onchange="state.strategy.rodionova_merge=this.value;save()" placeholder="Сроки, условия, что меняется">${s.rodionova_merge}</textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Решения по каналам</div>
+    <div class="row c3">
+      <div><label>Масштабируем</label><textarea onchange="state.strategy.scale_channels=this.value;save()">${s.scale_channels}</textarea></div>
+      <div><label>Сокращаем</label><textarea onchange="state.strategy.cut_channels=this.value;save()">${s.cut_channels}</textarea></div>
+      <div><label>Тестируем</label><textarea onchange="state.strategy.test_channels=this.value;save()">${s.test_channels}</textarea></div>
+    </div>
+  </div>`;
+}
+</script>
+<script>
+function renderStep7() {
+  let g = state.general;
+  let kpi = state.kpi_2026;
+
+  // Calculate totals
+  let yearRev = kpi.reduce((s,k,i)=>s+k.revpar*g.rooms_current*DAYS_IN_MONTH[i],0);
+  let avgRevpar = Math.round(kpi.reduce((s,k)=>s+k.revpar,0)/12);
+  let avgOcc = (kpi.reduce((s,k)=>s+k.occ,0)/12).toFixed(1);
+  let avgAdr = Math.round(kpi.reduce((s,k)=>s+k.adr,0)/12);
+  let otaComm = FACT_2025.ota.reduce((s,o)=>s+Math.round(o.rev2025*o.commission/100),0);
+
+  // Roadmap tasks
+  let taskRows = '';
+  if(state.roadmap.tasks.length===0) {
+    // Generate default tasks
+    state.roadmap.tasks = [
+      {month:'Фев',task:'Аудит всех OTA-карточек',owner:'Катя (зам)',kpi:'Все карточки проверены',status:'plan'},
+      {month:'Фев',task:'Настройка коллтрекинга на все каналы',owner:'Влад',kpi:'100% звонков атрибутированы',status:'plan'},
+      {month:'Фев',task:'Запуск рассылки в Telegram-боте (лояльность)',owner:'Илья',kpi:'500 подписчиков',status:'plan'},
+      {month:'Фев',task:'Сбор данных для ребрендинга',owner:'Катя С.',kpi:'Бриф передан агентству',status:'plan'},
+      {month:'Мар',task:'Ребрендинг: получение новых материалов',owner:'Катя С.',kpi:'Логотип, гайд утверждены',status:'plan'},
+      {month:'Мар',task:'Обновление Директа под новый бренд',owner:'Влад',kpi:'Все объявления обновлены',status:'plan'},
+      {month:'Мар',task:'Обновление OTA-карточек (новый бренд)',owner:'Катя (зам)',kpi:'Все площадки обновлены',status:'plan'},
+      {month:'Мар',task:'Конкурентный анализ Q1',owner:'Илья',kpi:'Отчёт готов',status:'plan'},
+      {month:'Апр',task:'Запуск подготовки к сезону (Директ)',owner:'Влад',kpi:'Бюджет масштабирован',status:'plan'},
+      {month:'Апр',task:'Upsell-программа для высокого сезона',owner:'Илья',kpi:'3 услуги запущены',status:'plan'},
+      {month:'Апр',task:'Фотосъёмка номеров (если нужна)',owner:'Катя (зам)',kpi:'Фотобанк обновлён',status:'plan'},
+      {month:'Май',task:'CIPR — спецтарифы, макс загрузка',owner:'Все',kpi:'100% загрузка 18-24 мая',status:'plan'},
+      {month:'Май',task:'Масштабирование Директа на сезон',owner:'Влад',kpi:'ДРР ≤ 10%',status:'plan'},
+      {month:'Июн',task:'Контроль ДРР в сезон',owner:'Катя С.',kpi:'ДРР 2-3%',status:'plan'},
+      {month:'Июл',task:'Пик: максимальный ADR',owner:'Все',kpi:'ADR ≥ 11 500',status:'plan'},
+      {month:'Авг',task:'Подготовка к снижению сезона',owner:'Катя С.',kpi:'План Q4 готов',status:'plan'},
+      {month:'Сен',task:'Анализ сезона, корректировка',owner:'Все',kpi:'Отчёт, выводы',status:'plan'},
+      {month:'Окт',task:'Запуск несезонных акций',owner:'Илья',kpi:'3 акции активны',status:'plan'},
+      {month:'Ноя',task:'Оптимизация расходов на несезон',owner:'Влад',kpi:'ДРР ≤ 15%',status:'plan'},
+      {month:'Дек',task:'Итоги года, планирование 2027',owner:'Катя С.',kpi:'Стратсессия проведена',status:'plan'}
+    ];
+  }
+
+  taskRows = state.roadmap.tasks.map((t,i)=>`<tr>
+    <td><input value="${t.month}" onchange="state.roadmap.tasks[${i}].month=this.value;save()" style="width:60px"></td>
+    <td><input value="${t.task}" onchange="state.roadmap.tasks[${i}].task=this.value;save()"></td>
+    <td><input value="${t.owner}" onchange="state.roadmap.tasks[${i}].owner=this.value;save()" style="width:120px"></td>
+    <td><input value="${t.kpi}" onchange="state.roadmap.tasks[${i}].kpi=this.value;save()"></td>
+    <td><select class="status-select" onchange="state.roadmap.tasks[${i}].status=this.value;save()">
+      <option value="plan" ${t.status==='plan'?'selected':''}>План</option>
+      <option value="progress" ${t.status==='progress'?'selected':''}>В работе</option>
+      <option value="done" ${t.status==='done'?'selected':''}>Готово</option>
+      <option value="overdue" ${t.status==='overdue'?'selected':''}>Просрочено</option>
+    </select></td>
+    <td><button class="btn btn-danger" style="padding:2px 8px;font-size:11px" onclick="state.roadmap.tasks.splice(${i},1);renderCurrentStep();save()">✕</button></td>
+  </tr>`).join('');
+
+  return `
+  <h2 class="step-title">Шаг 7. Дорожная карта и дашборды</h2>
+  <p class="step-desc">Итоговый результат — для команды и собственников</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-value">${fmt(Math.round(yearRev))} ₽</div><div class="kpi-label">Выручка 2026 цель</div></div>
+    <div class="kpi-card"><div class="kpi-value">${fmt(avgRevpar)} ₽</div><div class="kpi-label">RevPAR средний</div></div>
+    <div class="kpi-card"><div class="kpi-value">${avgOcc}%</div><div class="kpi-label">Загрузка средняя</div></div>
+    <div class="kpi-card"><div class="kpi-value">${fmt(avgAdr)} ₽</div><div class="kpi-label">ADR средний</div></div>
+    <div class="kpi-card"><div class="kpi-value" style="color:var(--red)">${fmt(otaComm)} ₽</div><div class="kpi-label">OTA комиссии 2025</div></div>
+    <div class="kpi-card"><div class="kpi-value">${g.rooms_current} → ${g.rooms_target}</div><div class="kpi-label">Номеров (сейчас → цель)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">RevPAR: 2025 факт vs 2026 план</div>
+    <div class="chart-container"><canvas id="chartRevpar"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Выручка по каналам 2025</div>
+    <div class="chart-container"><canvas id="chartChannels"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Директ: расход vs доход (2025)</div>
+    <div class="chart-container"><canvas id="chartDirect"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">OTA: выручка и комиссии</div>
+    <div class="chart-container"><canvas id="chartOta"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Дорожная карта — задачи <button class="btn btn-secondary" style="padding:4px 12px;font-size:12px;margin-left:auto;" onclick="state.roadmap.tasks.push({month:'',task:'',owner:'',kpi:'',status:'plan'});renderCurrentStep();save();">+ Добавить задачу</button></div>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Мес</th><th>Задача</th><th>Ответств.</th><th>KPI</th><th>Статус</th><th></th></tr>
+      ${taskRows}
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Матрица ответственности</div>
+    <div id="responsibilityMatrix"></div>
+  </div>
+
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;">
+    <button class="btn btn-success" onclick="downloadReport()">📄 Скачать HTML-отчёт</button>
+    <button class="btn btn-primary" onclick="window.print()">🖨 Печать</button>
+  </div>`;
+}
+
+function renderCharts() {
+  if(state.step !== 6) return; // step 7 is index 6
+
+  setTimeout(()=>{
+    // RevPAR chart
+    let ctx1 = document.getElementById('chartRevpar');
+    if(ctx1) {
+      new Chart(ctx1, {
+        type:'bar',
+        data:{
+          labels: MONTHS_SHORT,
+          datasets:[
+            {label:'RevPAR 2025 факт', data:FACT_2025.monthly_skvoz.map((r,i)=>Math.round(r.total/(FACT_2025.rooms*DAYS_IN_MONTH[i]))), backgroundColor:'rgba(108,92,231,0.5)', borderColor:'#6c5ce7', borderWidth:1},
+            {label:'RevPAR 2026 план', data:state.kpi_2026.map(k=>k.revpar), backgroundColor:'rgba(0,184,148,0.5)', borderColor:'#00b894', borderWidth:1},
+            {label:'Цель 6 100', type:'line', data:Array(12).fill(state.general.revpar_target), borderColor:'#e17055', borderDash:[5,5], pointRadius:0, fill:false}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#dfe6e9'}}},scales:{x:{ticks:{color:'#b2bec3'}},y:{ticks:{color:'#b2bec3'}}}}
+      });
+    }
+
+    // Channels chart
+    let ctx2 = document.getElementById('chartChannels');
+    if(ctx2) {
+      let ms = FACT_2025.monthly_skvoz;
+      new Chart(ctx2, {
+        type:'bar',
+        data:{
+          labels: ms.map(r=>r.m),
+          datasets:[
+            {label:'Карты', data:ms.map(r=>r.maps), backgroundColor:'#6c5ce7'},
+            {label:'Директ', data:ms.map(r=>r.direct), backgroundColor:'#00b894'},
+            {label:'SEO', data:ms.map(r=>r.seo), backgroundColor:'#fdcb6e'},
+            {label:'Не опред.', data:ms.map(r=>r.undef), backgroundColor:'#636e72'}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#dfe6e9'}}},scales:{x:{stacked:true,ticks:{color:'#b2bec3'}},y:{stacked:true,ticks:{color:'#b2bec3'}}}}
+      });
+    }
+
+    // Direct chart
+    let ctx3 = document.getElementById('chartDirect');
+    if(ctx3) {
+      let d = FACT_2025.direct_monthly;
+      new Chart(ctx3, {
+        type:'line',
+        data:{
+          labels: d.map(r=>r.m),
+          datasets:[
+            {label:'Расход', data:d.map(r=>r.spend), borderColor:'#e17055', backgroundColor:'rgba(225,112,85,0.1)', fill:true},
+            {label:'Доход', data:d.map(r=>r.rev), borderColor:'#00b894', backgroundColor:'rgba(0,184,148,0.1)', fill:true}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#dfe6e9'}}},scales:{x:{ticks:{color:'#b2bec3'}},y:{ticks:{color:'#b2bec3'}}}}
+      });
+    }
+
+    // OTA chart
+    let ctx4 = document.getElementById('chartOta');
+    if(ctx4) {
+      let ota = FACT_2025.ota.filter(o=>o.rev2025>1000000);
+      new Chart(ctx4, {
+        type:'bar',
+        data:{
+          labels: ota.map(o=>o.name),
+          datasets:[
+            {label:'Выручка', data:ota.map(o=>o.rev2025), backgroundColor:'rgba(0,184,148,0.6)'},
+            {label:'Комиссия', data:ota.map(o=>Math.round(o.rev2025*o.commission/100)), backgroundColor:'rgba(225,112,85,0.6)'}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{labels:{color:'#dfe6e9'}}},scales:{x:{ticks:{color:'#b2bec3'}},y:{ticks:{color:'#b2bec3',font:{size:11}}}}}
+      });
+    }
+
+    // Responsibility matrix
+    let matrixEl = document.getElementById('responsibilityMatrix');
+    if(matrixEl) {
+      let owners = {};
+      state.roadmap.tasks.forEach(t=>{
+        if(!owners[t.owner]) owners[t.owner]=[];
+        owners[t.owner].push(t);
+      });
+      let html = '<table><tr><th>Ответственный</th><th>Задачи</th><th>Статусы</th></tr>';
+      for(let [owner,tasks] of Object.entries(owners)) {
+        let tags = tasks.map(t=>`<span class="task-tag ${t.status}">${t.month}: ${t.task}</span>`).join(' ');
+        let counts = {plan:0,progress:0,done:0,overdue:0};
+        tasks.forEach(t=>counts[t.status]++);
+        let stats = `<span class="task-tag plan">${counts.plan} план</span><span class="task-tag progress">${counts.progress} в работе</span><span class="task-tag done">${counts.done} готово</span>` + (counts.overdue>0?`<span class="task-tag overdue">${counts.overdue} просроч.</span>`:'');
+        html += `<tr><td><strong>${owner}</strong></td><td>${tags}</td><td>${stats}</td></tr>`;
+      }
+      html += '</table>';
+      matrixEl.innerHTML = html;
+    }
+  }, 100);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const STEP_RENDERERS = [renderStep1,renderStep2,renderStep3,renderStep4,renderStep5,renderStep6,renderStep7];
+const STEP_NAMES = ['Общие данные','Факт 2025','Диджитал','Продукт','OTA и процессы','Стратегия','Результат'];
+
+function renderProgressBar() {
+  let html = '';
+  for(let i=0;i<STEP_RENDERERS.length;i++) {
+    let cls = i===state.step?'active':(i<state.step?'done':'');
+    html += `<div class="progress-step ${cls}" onclick="goToStep(${i})" title="${STEP_NAMES[i]}"></div>`;
+  }
+  document.getElementById('progressBar').innerHTML = html;
+}
+
+function renderCurrentStep() {
+  let container = document.getElementById('stepsContainer');
+  container.innerHTML = `<div class="step active">${STEP_RENDERERS[state.step]()}</div>`;
+  renderProgressBar();
+  if(state.step===6) renderCharts();
+}
+
+function nextStep() { if(state.step<STEP_RENDERERS.length-1){state.step++;renderCurrentStep();save();window.scrollTo(0,0);} }
+function prevStep() { if(state.step>0){state.step--;renderCurrentStep();save();window.scrollTo(0,0);} }
+function goToStep(i) { state.step=i;renderCurrentStep();save();window.scrollTo(0,0); }
+
+// ============================================================
+// SAVE / LOAD
+// ============================================================
+const STORAGE_KEY = 'nort_km_roadmap_2026';
+
+function save() {
+  let ind = document.getElementById('saveIndicator');
+  ind.textContent='Сохранение...'; ind.className='autosave-indicator saving';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  setTimeout(()=>{ind.textContent='✓ Сохранено'; ind.className='autosave-indicator saved';},300);
+  setTimeout(()=>{ind.textContent='Автосохранение'; ind.className='autosave-indicator';},2000);
+}
+
+function loadState() {
+  let saved = localStorage.getItem(STORAGE_KEY);
+  if(saved) {
+    try {
+      let parsed = JSON.parse(saved);
+      // Deep merge to keep new fields from default state
+      state = deepMerge(state, parsed);
+    } catch(e) { console.warn('Load error',e); }
+  }
+}
+
+function deepMerge(target, source) {
+  let result = {...target};
+  for(let key in source) {
+    if(source[key] && typeof source[key]==='object' && !Array.isArray(source[key]) && typeof target[key]==='object' && !Array.isArray(target[key])) {
+      result[key] = deepMerge(target[key], source[key]);
+    } else {
+      result[key] = source[key];
+    }
+  }
+  return result;
+}
+
+function saveToFile() {
+  let blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'nort_km_roadmap_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+
+function loadFromFile() { document.getElementById('fileInput').click(); }
+function handleFileLoad(e) {
+  let file = e.target.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      let parsed = JSON.parse(ev.target.result);
+      state = deepMerge(state, parsed);
+      renderCurrentStep();
+      save();
+      alert('Данные загружены!');
+    } catch(err) { alert('Ошибка чтения файла'); }
+  };
+  reader.readAsText(file);
+}
+
+// ============================================================
+// REPORT DOWNLOAD
+// ============================================================
+function downloadReport() {
+  let g = state.general;
+  let kpi = state.kpi_2026;
+  let yearRev = kpi.reduce((s,k,i)=>s+k.revpar*g.rooms_current*DAYS_IN_MONTH[i],0);
+
+  let kpiTableRows = kpi.map((k,i)=>{
+    let rev = k.revpar*g.rooms_current*DAYS_IN_MONTH[i];
+    return `<tr><td>${k.m}</td><td>${fmt(k.revpar)}</td><td>${k.occ}%</td><td>${fmt(k.adr)}</td><td>${fmt(Math.round(rev))}</td></tr>`;
+  }).join('');
+
+  let taskTableRows = state.roadmap.tasks.map(t=>{
+    let color = t.status==='done'?'#00b894':t.status==='overdue'?'#e17055':t.status==='progress'?'#fdcb6e':'#b2bec3';
+    return `<tr><td>${t.month}</td><td>${t.task}</td><td>${t.owner}</td><td>${t.kpi}</td><td style="color:${color};font-weight:600">${t.status==='plan'?'План':t.status==='progress'?'В работе':t.status==='done'?'Готово':'Просрочено'}</td></tr>`;
+  }).join('');
+
+  let otaTableRows = FACT_2025.ota.map(o=>`<tr><td>${o.name}</td><td>${fmt(o.rev2025)}</td><td>${o.commission}%</td><td>${fmt(Math.round(o.rev2025*o.commission/100))}</td></tr>`).join('');
+
+  let html = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NORT КМ — Дорожная карта 2026 (отчёт)</title>
 <style>
-body{font-family:-apple-system,sans-serif;max-width:960px;margin:0 auto;padding:20px;color:#1a1a2e;line-height:1.6;}
-h2,h3{color:#1a1a2e;} .card{margin-bottom:24px;}
-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0;}
-th,td{padding:10px 8px;border:1px solid #e5e7eb;text-align:left;}
-th{background:#1a1a2e;color:white;}
-tr:nth-child(even){background:#f9fafb;}
-.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;}
-.tag-green{background:#d1fae5;color:#065f46;} .tag-red{background:#fee2e2;color:#991b1b;}
-.tag-blue{background:#dbeafe;color:#1e40af;} .tag-yellow{background:#fef3c7;color:#92400e;}
-.kpi-card{display:flex;flex-direction:column;align-items:center;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;}
-.kpi-value{font-size:1.5rem;font-weight:700;color:#e94560;} .kpi-label{font-size:0.75rem;color:#6b7280;text-align:center;margin-top:4px;}
-.kpi-target{font-size:0.8rem;color:#10b981;font-weight:600;margin-top:2px;}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.timeline-item{padding:16px;margin-bottom:8px;border-left:4px solid #e94560;background:white;border-radius:0 8px 8px 0;}
-.tl-month{font-weight:700;color:#e94560;} .tl-task{padding:6px 0;display:flex;justify-content:space-between;border-bottom:1px solid #f3f4f6;}
-.tl-resp{font-size:0.75rem;color:#6b7280;} .q-label td{background:#e94560;color:white;font-weight:700;}
-.result-section{margin-bottom:32px;} .result-section h3{font-size:1.1rem;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e94560;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#dfe6e9;padding:40px;max-width:1100px;margin:0 auto}
+h1{color:#fff;text-align:center;margin-bottom:8px}
+h2{color:#a29bfe;margin:32px 0 12px;border-bottom:1px solid #2e3347;padding-bottom:8px}
+h3{color:#6c5ce7;margin:20px 0 8px}
+.sub{text-align:center;color:#b2bec3;margin-bottom:32px}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th{background:#1a1d27;color:#a29bfe;padding:10px 8px;text-align:left;font-size:13px}
+td{padding:8px;border-bottom:1px solid #2e3347;font-size:13px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0}
+.kpi-card{background:#1a1d27;border-radius:10px;padding:16px;text-align:center}
+.kpi-value{font-size:24px;font-weight:700;color:#00b894}
+.kpi-label{font-size:11px;color:#b2bec3;margin-top:4px}
+.section{background:#1a1d27;border:1px solid #2e3347;border-radius:12px;padding:24px;margin:16px 0}
+.red{color:#e17055}
+@media print{body{background:#fff;color:#333}th{background:#f0f0f0;color:#333}td{border-color:#ddd}.kpi-card{background:#f8f8f8}.kpi-value{color:#2d3436}.section{background:#f8f8f8;border-color:#ddd}}
 </style></head><body>
-<h1 style="text-align:center;">NORT Apart-Hotel — Дорожная карта 2026</h1>
-<p style="text-align:center;color:#6b7280;">Сгенерировано: ${new Date().toLocaleDateString('ru-RU')}</p>
-${content}
+<h1>NORT КМ — Дорожная карта 2026</h1>
+<p class="sub">Отчёт сформирован ${new Date().toLocaleDateString('ru-RU')} • ${g.rooms_current} номеров → ${g.rooms_target} к концу года</p>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">${fmt(Math.round(yearRev))} ₽</div><div class="kpi-label">Выручка 2026 цель</div></div>
+  <div class="kpi-card"><div class="kpi-value">${g.revpar_target} ₽</div><div class="kpi-label">RevPAR цель</div></div>
+  <div class="kpi-card"><div class="kpi-value">${g.drr_min}–${g.drr_max}%</div><div class="kpi-label">ДРР целевой</div></div>
+  <div class="kpi-card"><div class="kpi-value">${fmt(g.budget_monthly)} ₽</div><div class="kpi-label">Бюджет мес.</div></div>
+</div>
+
+<h2>KPI помесячно</h2>
+<table><tr><th>Мес</th><th>RevPAR</th><th>Загрузка</th><th>ADR</th><th>Выручка</th></tr>${kpiTableRows}</table>
+
+<h2>OTA — факт 2025</h2>
+<table><tr><th>Площадка</th><th>Выручка</th><th>Комиссия</th><th>Сумма</th></tr>${otaTableRows}</table>
+
+<h2>Дорожная карта — задачи</h2>
+<table><tr><th>Мес</th><th>Задача</th><th>Ответств.</th><th>KPI</th><th>Статус</th></tr>${taskTableRows}</table>
+
+<h2>Стратегические решения</h2>
+<div class="section">
+<h3>Приоритеты Q1</h3><p>${state.strategy.priorities_q1||'Не заполнено'}</p>
+<h3>Ограничения собственников</h3><p>${state.strategy.owner_constraints||'Не заполнено'}</p>
+<h3>Каналы: масштабируем</h3><p>${state.strategy.scale_channels||'Не заполнено'}</p>
+<h3>Каналы: сокращаем</h3><p>${state.strategy.cut_channels||'Не заполнено'}</p>
+<h3>Каналы: тестируем</h3><p>${state.strategy.test_channels||'Не заполнено'}</p>
+</div>
+
+<h2>Команда</h2>
+<table><tr><th>Имя</th><th>Роль</th></tr>${g.team.map(t=>`<tr><td>${t.name}</td><td>${t.role}</td></tr>`).join('')}</table>
+
 </body></html>`;
 
-const blob = new Blob([fullHTML], {type:'text/html'});
-const a = document.createElement('a');
-a.href = URL.createObjectURL(blob);
-a.download = 'NORT_Roadmap_2026.html';
-a.click();
+  let blob = new Blob([html], {type:'text/html'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'NORT_KM_Roadmap_2026_'+new Date().toISOString().slice(0,10)+'.html';
+  a.click();
 }
 
-// --- AUTO-SAVE ---
-function saveData() {
-const inputs = document.querySelectorAll('input, textarea, select');
-const data = {};
-inputs.forEach(el => { if(el.id) data[el.id] = el.value; });
-localStorage.setItem('nort_roadmap', JSON.stringify(data));
-}
-
-function loadData() {
-const saved = localStorage.getItem('nort_roadmap');
-if (!saved) return;
-try {
-const data = JSON.parse(saved);
-Object.keys(data).forEach(id => {
-const el = document.getElementById(id);
-if (el) el.value = data[id];
-});
-} catch(e) {}
-}
-
-// --- INIT ---
-document.addEventListener('DOMContentLoaded', () => {
-initProgressBar();
-initOTAAnalysis();
-initOTAAudit();
-loadData();
-
-// Auto-save on change
-document.querySelectorAll('input, textarea, select').forEach(el => {
-el.addEventListener('change', saveData);
-el.addEventListener('blur', saveData);
-});
-});
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+renderCurrentStep();
+setInterval(save, 30000);
 </script>
-
 </body>
 </html>
