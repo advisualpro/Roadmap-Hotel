@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORT Apart-Hotel — Стратегическая дорожная карта 2026</title>
+<style>
+:root {
+--primary: #1a1a2e;
+--accent: #e94560;
+--accent2: #0f3460;
+--bg: #f5f5f7;
+--card: #ffffff;
+--text: #1a1a2e;
+--muted: #6b7280;
+--success: #10b981;
+--warning: #f59e0b;
+--border: #e5e7eb;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+.app-header {
+background: linear-gradient(135deg, var(--primary), var(--accent2));
+color:white; padding:24px 32px; position:sticky; top:0; z-index:100;
+box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+.app-header h1 { font-size:1.4rem; font-weight:700; }
+.app-header p { font-size:0.85rem; opacity:0.8; margin-top:4px; }
+
+.progress-bar { display:flex; gap:4px; margin-top:16px; }
+.progress-step {
+flex:1; height:6px; border-radius:3px; background:rgba(255,255,255,0.2);
+transition: background 0.3s;
+}
+.progress-step.active { background: var(--accent); }
+.progress-step.done { background: var(--success); }
+
+.container { max-width:960px; margin:0 auto; padding:24px 16px; }
+
+.step { display:none; animation: fadeIn 0.3s ease; }
+.step.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.card {
+background:var(--card); border-radius:12px; padding:24px;
+margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+border:1px solid var(--border);
+}
+.card h2 { font-size:1.2rem; margin-bottom:4px; color:var(--primary); }
+.card .subtitle { font-size:0.85rem; color:var(--muted); margin-bottom:16px; }
+
+.form-group { margin-bottom:16px; }
+.form-group label {
+display:block; font-size:0.85rem; font-weight:600;
+margin-bottom:6px; color:var(--text);
+}
+.form-group .hint {
+font-size:0.75rem; color:var(--muted); margin-bottom:6px;
+}
+.form-group input, .form-group select, .form-group textarea {
+width:100%; padding:10px 12px; border:1px solid var(--border);
+border-radius:8px; font-size:0.9rem; font-family:inherit;
+transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+outline:none; border-color:var(--accent);
+}
+.form-group textarea { resize:vertical; min-height:80px; }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.grid-4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; }
+.grid-6 { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+.grid-12 { display:grid; grid-template-columns:repeat(12,1fr); gap:6px; }
+
+@media(max-width:768px) {
+.grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; }
+.grid-6 { grid-template-columns:repeat(3,1fr); }
+.grid-12 { grid-template-columns:repeat(4,1fr); }
+}
+
+.month-grid label { font-size:0.75rem; text-align:center; }
+.month-grid input { text-align:center; padding:8px 4px; font-size:0.8rem; }
+
+.btn-row { display:flex; gap:12px; justify-content:flex-end; margin-top:24px; padding-top:16px; border-top:1px solid var(--border); }
+.btn {
+padding:12px 28px; border-radius:8px; font-size:0.9rem; font-weight:600;
+cursor:pointer; border:none; transition:all 0.2s;
+}
+.btn-primary { background:var(--accent); color:white; }
+.btn-primary:hover { background:#d63853; transform:translateY(-1px); }
+.btn-secondary { background:var(--border); color:var(--text); }
+.btn-secondary:hover { background:#d1d5db; }
+.btn-success { background:var(--success); color:white; }
+.btn-success:hover { background:#059669; }
+
+.section-title {
+font-size:0.75rem; font-weight:700; text-transform:uppercase;
+letter-spacing:1px; color:var(--accent); margin:24px 0 12px;
+}
+
+.tag {
+display:inline-block; padding:2px 10px; border-radius:20px;
+font-size:0.75rem; font-weight:600; margin:2px;
+}
+.tag-green { background:#d1fae5; color:#065f46; }
+.tag-red { background:#fee2e2; color:#991b1b; }
+.tag-blue { background:#dbeafe; color:#1e40af; }
+.tag-yellow { background:#fef3c7; color:#92400e; }
+
+.roadmap-table { width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:12px; }
+.roadmap-table th, .roadmap-table td { padding:10px 8px; border:1px solid var(--border); text-align:left; }
+.roadmap-table th { background:var(--primary); color:white; font-weight:600; font-size:0.75rem; }
+.roadmap-table tr:nth-child(even) { background:#f9fafb; }
+.roadmap-table .q-label { background:var(--accent); color:white; font-weight:700; font-size:0.8rem; }
+
+.kpi-card {
+display:flex; flex-direction:column; align-items:center;
+padding:16px; background:#f9fafb; border-radius:8px; border:1px solid var(--border);
+}
+.kpi-card .kpi-value { font-size:1.5rem; font-weight:700; color:var(--accent); }
+.kpi-card .kpi-label { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:4px; }
+.kpi-card .kpi-target { font-size:0.8rem; color:var(--success); font-weight:600; margin-top:2px; }
+
+.ota-row { display:grid; grid-template-columns: 160px 1fr 1fr 1fr 1fr 1fr; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+.ota-row.header { font-weight:700; font-size:0.75rem; color:var(--muted); }
+.ota-row span { font-size:0.85rem; }
+.ota-row input, .ota-row select { padding:6px 8px; font-size:0.8rem; }
+
+@media(max-width:768px) {
+.ota-row { grid-template-columns:1fr; }
+}
+
+.result-section { margin-bottom:32px; }
+.result-section h3 { font-size:1.1rem; margin-bottom:12px; color:var(--primary); padding-bottom:8px; border-bottom:2px solid var(--accent); }
+
+.timeline-item {
+padding:16px; margin-bottom:8px; border-left:4px solid var(--accent);
+background:var(--card); border-radius:0 8px 8px 0;
+}
+.timeline-item .tl-month { font-weight:700; color:var(--accent); font-size:0.85rem; }
+.timeline-item .tl-tasks { margin-top:8px; }
+.timeline-item .tl-task {
+padding:6px 0; font-size:0.85rem; display:flex; justify-content:space-between;
+border-bottom:1px solid #f3f4f6;
+}
+.timeline-item .tl-task:last-child { border:none; }
+.timeline-item .tl-resp { font-size:0.75rem; color:var(--muted); }
+
+#printArea { display:none; }
+@media print {
+.app-header, .btn-row, .no-print { display:none!important; }
+#printArea { display:block!important; }
+.step { display:none!important; }
+body { background:white; }
+}
+
+.prefilled { background:#fffbeb; border-color:#fbbf24; }
+.prefilled-note { font-size:0.7rem; color:#92400e; margin-top:2px; }
+
+.collapse-toggle {
+cursor:pointer; user-select:none; display:flex; align-items:center;
+gap:8px; padding:8px 0; font-weight:600; color:var(--accent2);
+}
+.collapse-toggle::before { content:'▸'; transition:transform 0.2s; }
+.collapse-toggle.open::before { transform:rotate(90deg); }
+.collapse-content { display:none; padding-left:16px; }
+.collapse-content.open { display:block; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+<h1>NORT Apart-Hotel — Дорожная карта 2026</h1>
+<p>Интерактивный инструмент подготовки стратегической сессии</p>
+<div class="progress-bar" id="progressBar"></div>
+</header>
+
+<div class="container">
+
+<!-- ======== STEP 0: INTRO ======== -->
+<div class="step active" id="step-0">
+<div class="card">
+<h2>Добро пожаловать</h2>
+<p class="subtitle">Этот инструмент поможет собрать все данные от команды и сгенерировать дорожную карту на 2026 год</p>
+<p style="margin:16px 0; font-size:0.9rem;">
+Заполняйте шаг за шагом. Данные, которые мы уже обсудили, предзаполнены (подсвечены жёлтым). Каждый сотрудник заполняет свой блок. В конце система сгенерирует:
+</p>
+<ul style="margin:12px 0 12px 20px; font-size:0.9rem;">
+<li>Помесячный план действий на год</li>
+<li>Детальный календарь на 3 ближайших месяца</li>
+<li>KPI и контрольные точки по каждому направлению</li>
+<li>Ожидаемый финансовый результат</li>
+</ul>
+<p style="font-size:0.85rem; color:var(--muted);">Данные сохраняются в браузере автоматически. Можно закрыть и вернуться.</p>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goStep(1)">Начать →</button>
+</div>
+</div>
+
+<!-- ======== STEP 1: ОБЩИЕ ДАННЫЕ ======== -->
+<div class="step" id="step-1">
+<div class="card">
+<h2>Шаг 1: Общие данные и цели</h2>
+<p class="subtitle">Заполняет: Катя Сивкова (руководитель)</p>
+
+<div class="section-title">Факт 2025</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Выручка за год, ₽</label>
+<input type="text" id="fact_revenue" class="prefilled" value="196 453 103">
+<div class="prefilled-note">Предзаполнено из Бново</div>
+</div>
+<div class="form-group">
+<label>RevPAR факт, ₽</label>
+<input type="text" id="fact_revpar" class="prefilled" value="5 612">
+</div>
+<div class="form-group">
+<label>ADR факт, ₽</label>
+<input type="text" id="fact_adr" class="prefilled" value="6 851">
+</div>
+</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Загрузка факт, %</label>
+<input type="text" id="fact_occ" class="prefilled" value="81">
+</div>
+<div class="form-group">
+<label>Кол-во номеров</label>
+<input type="text" id="rooms" class="prefilled" value="112">
+</div>
+<div class="form-group">
+<label>Бюджет маркетинга/мес (с ФОТ), ₽</label>
+<input type="text" id="budget_monthly" class="prefilled" value="440 000">
+</div>
+</div>
+
+<div class="section-title">Целевой RevPAR 2026 по месяцам</div>
+<div class="hint" style="margin-bottom:8px;">Предзаполнено из вашего плана. Средний целевой: 6 100 ₽</div>
+<div class="grid-12 month-grid">
+<div class="form-group"><label>Янв</label><input type="text" id="revpar_1" class="prefilled" value="4600"></div>
+<div class="form-group"><label>Фев</label><input type="text" id="revpar_2" class="prefilled" value="3310"></div>
+<div class="form-group"><label>Мар</label><input type="text" id="revpar_3" class="prefilled" value="4180"></div>
+<div class="form-group"><label>Апр</label><input type="text" id="revpar_4" class="prefilled" value="5020"></div>
+<div class="form-group"><label>Май</label><input type="text" id="revpar_5" class="prefilled" value="10410"></div>
+<div class="form-group"><label>Июн</label><input type="text" id="revpar_6" class="prefilled" value="8990"></div>
+<div class="form-group"><label>Июл</label><input type="text" id="revpar_7" class="prefilled" value="8990"></div>
+<div class="form-group"><label>Авг</label><input type="text" id="revpar_8" class="prefilled" value="9690"></div>
+<div class="form-group"><label>Сен</label><input type="text" id="revpar_9" class="prefilled" value="6150"></div>
+<div class="form-group"><label>Окт</label><input type="text" id="revpar_10" class="prefilled" value="5260"></div>
+<div class="form-group"><label>Ноя</label><input type="text" id="revpar_11" class="prefilled" value="4510"></div>
+<div class="form-group"><label>Дек</label><input type="text" id="revpar_12" class="prefilled" value="2690"></div>
+</div>
+
+<div class="section-title">Целевая выручка по месяцам (авторасчёт)</div>
+<div class="grid-12 month-grid" id="revenueTargets"></div>
+
+<div class="section-title">Бюджет маркетинга — текущее распределение</div>
+<div class="hint" style="margin-bottom:8px;">Как сейчас делится бюджет ~440 тыс/мес (без ФОТ, только расходы ~185–190 тыс)</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Яндекс.Директ, ₽/мес</label>
+<input type="text" id="budget_direct" class="prefilled" value="121 200">
+</div>
+<div class="form-group">
+<label>Яндекс.Карты, ₽/мес</label>
+<input type="text" id="budget_ymaps" class="prefilled" value="15 000">
+</div>
+<div class="form-group">
+<label>2ГИС, ₽/мес</label>
+<input type="text" id="budget_2gis" value="47 760">
+<div class="prefilled-note">С января 2026</div>
+</div>
+</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Коллтрекинг, ₽/мес</label>
+<input type="text" id="budget_calltrack" class="prefilled" value="13 300">
+</div>
+<div class="form-group">
+<label>Полиграфия, ₽/мес (средн.)</label>
+<input type="text" id="budget_print" class="prefilled" value="10 864">
+</div>
+<div class="form-group">
+<label>Прочее (Wappi, CRM и т.д.), ₽/мес</label>
+<input type="text" id="budget_other" class="prefilled" value="19 800">
+</div>
+</div>
+
+<div class="section-title">Комиссии OTA за 2025</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Общая сумма комиссий OTA за 2025, ₽</label>
+<input type="text" id="ota_commission_total" placeholder="Посчитай из Бново">
+<div class="hint">Оценочно ~4,5–5,3 млн ₽ (нужна точная цифра)</div>
+</div>
+<div class="form-group">
+<label>Доля OTA в выручке 2025, %</label>
+<input type="text" id="ota_share" placeholder="Оценочно ~29-30%">
+</div>
+</div>
+
+<div class="section-title">Главные цели на 2026</div>
+<div class="form-group">
+<label>Цель 1: RevPAR</label>
+<input type="text" id="goal_revpar" class="prefilled" value="Довести средний RevPAR до 6 100 ₽ (рост с 5 612)">
+</div>
+<div class="form-group">
+<label>Цель 2: Доля прямых бронирований</label>
+<input type="text" id="goal_direct" placeholder="Например: Увеличить с 40% до 50%">
+</div>
+<div class="form-group">
+<label>Цель 3: Снижение зависимости от OTA</label>
+<input type="text" id="goal_ota" placeholder="Например: Снизить долю OTA с 30% до 22%">
+</div>
+<div class="form-group">
+<label>Цель 4 (свободная)</label>
+<input type="text" id="goal_custom" placeholder="Например: Запуск корп. направления">
+</div>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(0)">← Назад</button>
+<button class="btn btn-primary" onclick="goStep(2)">Далее: Диджитал →</button>
+</div>
+</div>
+
+<!-- ======== STEP 2: ДИДЖИТАЛ ======== -->
+<div class="step" id="step-2">
+<div class="card">
+<h2>Шаг 2: Диджитал-маркетинг</h2>
+<p class="subtitle">Заполняет: Влад Большаков</p>
+
+<div class="section-title">Яндекс.Директ — факт за ноябрь</div>
+<div class="grid-4">
+<div class="form-group">
+<label>Расход, ₽</label>
+<input type="text" id="direct_spend" class="prefilled" value="121 200">
+</div>
+<div class="form-group">
+<label>Показы</label>
+<input type="text" id="direct_impressions" class="prefilled" value="32 402">
+</div>
+<div class="form-group">
+<label>Клики</label>
+<input type="text" id="direct_clicks" class="prefilled" value="2 461">
+</div>
+<div class="form-group">
+<label>Бронирований</label>
+<input type="text" id="direct_bookings" class="prefilled" value="50">
+</div>
+</div>
+<div class="grid-3">
+<div class="form-group">
+<label>CTR, %</label>
+<input type="text" id="direct_ctr" class="prefilled" value="7.6">
+</div>
+<div class="form-group">
+<label>CR переход→бронь, %</label>
+<input type="text" id="direct_cr" class="prefilled" value="1.95">
+</div>
+<div class="form-group">
+<label>Стоимость брони, ₽</label>
+<input type="text" id="direct_cpb" class="prefilled" value="2 525">
+</div>
+</div>
+<div class="form-group">
+<label>Главные проблемы с Директом</label>
+<textarea id="direct_problems" placeholder="Что не работает? Какие кампании сливают бюджет? Какие ключи неэффективны?"></textarea>
+</div>
+<div class="form-group">
+<label>План оптимизации на фев-апр</label>
+<textarea id="direct_plan" placeholder="Что конкретно планируешь изменить? Новые кампании, минус-слова, ретаргетинг?"></textarea>
+</div>
+<div class="form-group">
+<label>Целевая стоимость брони через 3 месяца, ₽</label>
+<input type="text" id="direct_target_cpb" placeholder="Например: 1 500">
+</div>
+
+<div class="section-title">Яндекс.Карты — факт за ноябрь</div>
+<div class="grid-4">
+<div class="form-group">
+<label>Расход (подписка), ₽</label>
+<input type="text" id="ymaps_spend" class="prefilled" value="15 000">
+</div>
+<div class="form-group">
+<label>Показы карточки</label>
+<input type="text" id="ymaps_impressions" class="prefilled" value="36 206">
+</div>
+<div class="form-group">
+<label>Всего лидов (клики+звонки)</label>
+<input type="text" id="ymaps_leads" class="prefilled" value="784">
+</div>
+<div class="form-group">
+<label>Бронирований итого</label>
+<input type="text" id="ymaps_bookings" class="prefilled" value="109">
+</div>
+</div>
+<div class="form-group">
+<label>Почему теряем 83% лидов с Карт?</label>
+<textarea id="ymaps_problems" placeholder="Проблемы с обработкой звонков? Качество карточки? Отзывы?"></textarea>
+</div>
+<div class="form-group">
+<label>Целевая конверсия с Карт через 3 мес, %</label>
+<input type="text" id="ymaps_target_cr" placeholder="Сейчас 14%, цель?">
+</div>
+
+<div class="section-title">2ГИС — факт за ноябрь</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Показы</label>
+<input type="text" id="gis_impressions" class="prefilled" value="2 614">
+</div>
+<div class="form-group">
+<label>Всего бронирований</label>
+<input type="text" id="gis_bookings" class="prefilled" value="8">
+</div>
+<div class="form-group">
+<label>Расход, ₽</label>
+<input type="text" id="gis_spend" value="0">
+<div class="hint">С января подключён за 47 760/мес</div>
+</div>
+</div>
+<div class="form-group">
+<label>Ожидания от 2ГИС на фев-апр</label>
+<textarea id="gis_plan" placeholder="Что ожидаем за 47 760/мес? Как трекаем?"></textarea>
+</div>
+
+<div class="section-title">Google Карты — факт за ноябрь</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Показы</label>
+<input type="text" id="gmaps_impressions" class="prefilled" value="13 524">
+</div>
+<div class="form-group">
+<label>Бронирований</label>
+<input type="text" id="gmaps_bookings" class="prefilled" value="34">
+</div>
+<div class="form-group">
+<label>Расход, ₽</label>
+<input type="text" id="gmaps_spend" class="prefilled" value="0">
+</div>
+</div>
+
+<div class="section-title">Сайт и модуль бронирования</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Трафик на сайт/мес</label>
+<input type="text" id="site_traffic" placeholder="Из Яндекс.Метрики">
+</div>
+<div class="form-group">
+<label>Бронирований через модуль (ноябрь)</label>
+<input type="text" id="site_bookings" class="prefilled" value="398">
+</div>
+<div class="form-group">
+<label>Конверсия трафик→бронь, %</label>
+<input type="text" id="site_cr" placeholder="Авторасчёт после заполнения трафика">
+</div>
+</div>
+<div class="form-group">
+<label>Основные проблемы сайта / модуля бронирования</label>
+<textarea id="site_problems" placeholder="Скорость загрузки? Мобильная версия? UX модуля?"></textarea>
+</div>
+
+<div class="section-title">Email-маркетинг и рассылки</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Размер базы email</label>
+<input type="text" id="email_base" placeholder="Сколько контактов?">
+</div>
+<div class="form-group">
+<label>Кол-во рассылок за послед. 3 мес</label>
+<input type="text" id="email_sent" placeholder="">
+</div>
+<div class="form-group">
+<label>Open rate средний, %</label>
+<input type="text" id="email_or" placeholder="">
+</div>
+</div>
+<div class="form-group">
+<label>Wappi.pro (1 800/мес) — что делает и какой результат?</label>
+<textarea id="wappi_status" placeholder="Рассылки в WhatsApp? Автоответы? Результат?"></textarea>
+</div>
+
+<div class="section-title">Задачи Влада — конкретика с датами</div>
+<div class="form-group">
+<label>Что готов запустить/изменить в ближайшие 2 недели?</label>
+<textarea id="vlad_2weeks" placeholder="Конкретные задачи с датами"></textarea>
+</div>
+<div class="form-group">
+<label>Что запустить в марте?</label>
+<textarea id="vlad_march" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Что запустить в апреле (подготовка к сезону)?</label>
+<textarea id="vlad_april" placeholder=""></textarea>
+</div>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(1)">← Назад</button>
+<button class="btn btn-primary" onclick="goStep(3)">Далее: Продуктовый маркетинг →</button>
+</div>
+</div>
+
+<!-- ======== STEP 3: ПРОДУКТОВЫЙ ======== -->
+<div class="step" id="step-3">
+<div class="card">
+<h2>Шаг 3: Продуктовый маркетинг и работа с гостями</h2>
+<p class="subtitle">Заполняет: Соколов Илья</p>
+
+<div class="section-title">Отзывы — текущие рейтинги</div>
+<div class="hint" style="margin-bottom:12px;">Предзаполнено из ноябрьских данных. Обнови если изменилось.</div>
+<div class="grid-4">
+<div class="form-group"><label>Яндекс.Карты</label><input type="text" id="rev_ymaps" class="prefilled" value="5.0 (1364 отзыва)"></div>
+<div class="form-group"><label>Google Maps</label><input type="text" id="rev_gmaps" class="prefilled" value="4.9 (280)"></div>
+<div class="form-group"><label>2ГИС</label><input type="text" id="rev_2gis" class="prefilled" value="4.9 (368)"></div>
+<div class="form-group"><label>Островок</label><input type="text" id="rev_ostrovok" class="prefilled" value="8.9 (105)"></div>
+</div>
+<div class="grid-4">
+<div class="form-group"><label>Суточно.ру</label><input type="text" id="rev_sutochno" class="prefilled" value="9.7 (138)"></div>
+<div class="form-group"><label>Ozon Travel</label><input type="text" id="rev_ozon" class="prefilled" value="4.6 (262)"></div>
+<div class="form-group"><label>Авито</label><input type="text" id="rev_avito" class="prefilled" value="4.8 (138)"></div>
+<div class="form-group"><label>Яндекс.Путешествия</label><input type="text" id="rev_yp" class="prefilled" value="5.0 (147)"></div>
+</div>
+<div class="form-group">
+<label>Топ-5 повторяющихся жалоб</label>
+<textarea id="complaints_top5" placeholder="Что пишут в негативных отзывах? Конкретные формулировки."></textarea>
+</div>
+<div class="form-group">
+<label>Топ-5 повторяющихся похвал</label>
+<textarea id="praise_top5" placeholder="За что хвалят чаще всего?"></textarea>
+</div>
+<div class="form-group">
+<label>Ozon Travel (4.6) и Авито (4.8) — почему низкие? Что делаем?</label>
+<textarea id="low_ratings_plan" placeholder=""></textarea>
+</div>
+
+<div class="section-title">Программа лояльности</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Бронирований по программе</label>
+<input type="text" id="loyalty_bookings" class="prefilled" value="5">
+</div>
+<div class="form-group">
+<label>Выручка по программе, ₽</label>
+<input type="text" id="loyalty_revenue" class="prefilled" value="29 799">
+</div>
+<div class="form-group">
+<label>Кол-во участников программы</label>
+<input type="text" id="loyalty_members" placeholder="Сколько зарегистрировано?">
+</div>
+</div>
+<div class="form-group">
+<label>Почему программа не работает? Что предлагаешь?</label>
+<textarea id="loyalty_plan" placeholder="Перезапуск? Новые условия? Интеграция с рассылками? Конкретный план с датами."></textarea>
+</div>
+
+<div class="section-title">Корпоративные клиенты</div>
+<div class="grid-3">
+<div class="form-group">
+<label>Кол-во корп. бронирований за 2025</label>
+<input type="text" id="corp_bookings" placeholder="Данных нет — нужно собрать">
+</div>
+<div class="form-group">
+<label>Выручка от корп., ₽</label>
+<input type="text" id="corp_revenue" placeholder="">
+</div>
+<div class="form-group">
+<label>Кол-во действующих договоров</label>
+<input type="text" id="corp_contracts" placeholder="">
+</div>
+</div>
+<div class="form-group">
+<label>План по развитию корп. направления (особенно на несезон)</label>
+<textarea id="corp_plan" placeholder="Работа с командировочными, партнёрства с предприятиями, выход на тендеры?"></textarea>
+</div>
+
+<div class="section-title">Портрет гостя</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Средний чек</label>
+<input type="text" id="avg_check" class="prefilled" value="9 300 ₽">
+</div>
+<div class="form-group">
+<label>Средняя длительность, ночей</label>
+<input type="text" id="avg_nights" class="prefilled" value="2.1">
+</div>
+</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Доля повторных гостей, %</label>
+<input type="text" id="repeat_rate" placeholder="Из АМО/Бново">
+</div>
+<div class="form-group">
+<label>Среднее за сколько дней до заезда бронируют</label>
+<input type="text" id="booking_window" placeholder="Данных нет — нужно посчитать">
+</div>
+</div>
+<div class="form-group">
+<label>ТОП-5 городов/регионов гостей</label>
+<textarea id="guest_geo" placeholder="Откуда едут?"></textarea>
+</div>
+
+<div class="section-title">Доп. услуги и средний чек</div>
+<div class="form-group">
+<label>Какие доп. услуги есть и продаются?</label>
+<textarea id="upsell_current" placeholder="Трансфер, экскурсии, поздний выезд, завтраки..."></textarea>
+</div>
+<div class="form-group">
+<label>Какие доп. услуги можно внедрить за 3 месяца?</label>
+<textarea id="upsell_plan" placeholder="Конкретные предложения с оценкой потенциала"></textarea>
+</div>
+
+<div class="section-title">Анализ OTA-каналов по эффективности</div>
+<div class="hint" style="margin-bottom:12px;">Оцени каждый канал: оставлять / усилить / сократить / отключить</div>
+
+<div id="otaAnalysis">
+<div class="ota-row header">
+<span>Канал</span><span>Выручка (3 мес)</span><span>Комиссия</span><span>Конверсия</span><span>Оценка</span><span>Действие</span>
+</div>
+</div>
+
+<div class="section-title">Конкуренты</div>
+<div class="form-group">
+<label>Топ-5 конкурентов (название, цены, рейтинги, преимущества/слабости)</label>
+<textarea id="competitors" placeholder="1. ... &#10;2. ... &#10;3. ..."></textarea>
+</div>
+<div class="form-group">
+<label>Наше УТП — как мы его формулируем сейчас?</label>
+<textarea id="utp" placeholder=""></textarea>
+</div>
+
+<div class="section-title">Задачи Ильи — конкретика с датами</div>
+<div class="form-group">
+<label>Ближайшие 2 недели</label>
+<textarea id="ilya_2weeks" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Март</label>
+<textarea id="ilya_march" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Апрель (подготовка к сезону)</label>
+<textarea id="ilya_april" placeholder=""></textarea>
+</div>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(2)">← Назад</button>
+<button class="btn btn-primary" onclick="goStep(4)">Далее: Ассистент →</button>
+</div>
+</div>
+
+<!-- ======== STEP 4: АССИСТЕНТ ======== -->
+<div class="step" id="step-4">
+<div class="card">
+<h2>Шаг 4: OTA-карточки, визуал, полиграфия</h2>
+<p class="subtitle">Заполняет: Катя Утенкова</p>
+
+<div class="section-title">Аудит OTA-карточек</div>
+<div class="hint" style="margin-bottom:12px;">По каждой площадке оцени состояние</div>
+
+<div id="otaAudit"></div>
+
+<div class="section-title">Отзывы — оперативный статус</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Площадки с неотвеченными отзывами</label>
+<textarea id="unanswered_reviews" placeholder="Где есть неотвеченные?"></textarea>
+</div>
+<div class="form-group">
+<label>Средняя скорость ответа на отзыв</label>
+<input type="text" id="review_speed" placeholder="Например: 24 часа">
+</div>
+</div>
+
+<div class="section-title">Фотоконтент</div>
+<div class="grid-2">
+<div class="form-group">
+<label>Дата последней фотосессии</label>
+<input type="text" id="last_photo" class="prefilled" value="Декабрь 2025 (3 объекта, 9 000 ₽)">
+</div>
+<div class="form-group">
+<label>Все категории номеров покрыты?</label>
+<select id="photo_complete">
+<option value="">Выбери</option>
+<option value="yes">Да, всё актуально</option>
+<option value="partial">Частично, нужно доснять</option>
+<option value="no">Нет, критично обновить</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label>Что нужно переснять / дополнить?</label>
+<textarea id="photo_needs" placeholder="Конкретные категории, ракурсы, общие зоны"></textarea>
+</div>
+
+<div class="section-title">Полиграфия</div>
+<div class="form-group">
+<label>Что есть сейчас (буклеты, карточки, навигация)</label>
+<textarea id="print_current" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Что нужно создать/обновить на ближайшие 3 месяца</label>
+<textarea id="print_needs" placeholder=""></textarea>
+</div>
+
+<div class="section-title">Задачи Кати У. — конкретика с датами</div>
+<div class="form-group">
+<label>Ближайшие 2 недели</label>
+<textarea id="katya_u_2weeks" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Март</label>
+<textarea id="katya_u_march" placeholder=""></textarea>
+</div>
+<div class="form-group">
+<label>Апрель</label>
+<textarea id="katya_u_april" placeholder=""></textarea>
+</div>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(3)">← Назад</button>
+<button class="btn btn-primary" onclick="goStep(5)">Далее: Ценообразование →</button>
+</div>
+</div>
+
+<!-- ======== STEP 5: ЦЕНООБРАЗОВАНИЕ ======== -->
+<div class="step" id="step-5">
+<div class="card">
+<h2>Шаг 5: Ценообразование и стратегия каналов</h2>
+<p class="subtitle">Заполняет: Катя Сивкова</p>
+
+<div class="section-title">ADR факт 2025 по месяцам</div>
+<div class="hint" style="margin-bottom:8px;">Заполни из Бново — нужно для анализа ценовой стратегии</div>
+<div class="grid-12 month-grid">
+<div class="form-group"><label>Янв</label><input type="text" id="adr_1" placeholder=""></div>
+<div class="form-group"><label>Фев</label><input type="text" id="adr_2" placeholder=""></div>
+<div class="form-group"><label>Мар</label><input type="text" id="adr_3" placeholder=""></div>
+<div class="form-group"><label>Апр</label><input type="text" id="adr_4" placeholder=""></div>
+<div class="form-group"><label>Май</label><input type="text" id="adr_5" placeholder=""></div>
+<div class="form-group"><label>Июн</label><input type="text" id="adr_6" placeholder=""></div>
+<div class="form-group"><label>Июл</label><input type="text" id="adr_7" placeholder=""></div>
+<div class="form-group"><label>Авг</label><input type="text" id="adr_8" placeholder=""></div>
+<div class="form-group"><label>Сен</label><input type="text" id="adr_9" placeholder=""></div>
+<div class="form-group"><label>Окт</label><input type="text" id="adr_10" placeholder=""></div>
+<div class="form-group"><label>Ноя</label><input type="text" id="adr_11" placeholder=""></div>
+<div class="form-group"><label>Дек</label><input type="text" id="adr_12" placeholder=""></div>
+</div>
+
+<div class="section-title">Загрузка факт 2025 по месяцам, %</div>
+<div class="grid-12 month-grid">
+<div class="form-group"><label>Янв</label><input type="text" id="occ_1" placeholder=""></div>
+<div class="form-group"><label>Фев</label><input type="text" id="occ_2" placeholder=""></div>
+<div class="form-group"><label>Мар</label><input type="text" id="occ_3" placeholder=""></div>
+<div class="form-group"><label>Апр</label><input type="text" id="occ_4" placeholder=""></div>
+<div class="form-group"><label>Май</label><input type="text" id="occ_5" placeholder=""></div>
+<div class="form-group"><label>Июн</label><input type="text" id="occ_6" placeholder=""></div>
+<div class="form-group"><label>Июл</label><input type="text" id="occ_7" placeholder=""></div>
+<div class="form-group"><label>Авг</label><input type="text" id="occ_8" placeholder=""></div>
+<div class="form-group"><label>Сен</label><input type="text" id="occ_9" placeholder=""></div>
+<div class="form-group"><label>Окт</label><input type="text" id="occ_10" placeholder=""></div>
+<div class="form-group"><label>Ноя</label><input type="text" id="occ_11" placeholder=""></div>
+<div class="form-group"><label>Дек</label><input type="text" id="occ_12" placeholder=""></div>
+</div>
+
+<div class="section-title">Ценовая стратегия</div>
+<div class="form-group">
+<label>Используется ли динамическое ценообразование?</label>
+<select id="dynamic_pricing">
+<option value="">Выбери</option>
+<option value="yes">Да, полноценное</option>
+<option value="partial">Частично (ручное, по ощущениям)</option>
+<option value="no">Нет, фиксированные тарифы</option>
+</select>
+</div>
+<div class="form-group">
+<label>Есть ли потенциал роста ADR? За счёт чего?</label>
+<textarea id="adr_growth" placeholder="Улучшение номеров? Доп. услуги в тарифе? Рост рынка? Конкурентный анализ показывает, что мы ниже рынка?"></textarea>
+</div>
+
+<div class="section-title">Стратегия каналов продаж</div>
+<div class="form-group">
+<label>Целевое соотношение прямые/OTA на конец 2026</label>
+<div class="grid-2">
+<div class="form-group"><label>Прямые, %</label><input type="text" id="target_direct_share" placeholder="Сейчас ~40%"></div>
+<div class="form-group"><label>OTA, %</label><input type="text" id="target_ota_share" placeholder="Сейчас ~30%"></div>
+</div>
+</div>
+<div class="form-group">
+<label>Что конкретно будем делать для перетягивания с OTA на прямые?</label>
+<textarea id="channel_shift_plan" placeholder="Бонус за прямое бронирование? Лучшая цена на сайте? Промокоды?"></textarea>
+</div>
+
+<div class="section-title">Несезон (февраль—апрель): антикризисный план</div>
+<div class="form-group">
+<label>Какие акции/спецпредложения планируются?</label>
+<textarea id="offseason_promos" placeholder="Длинные проживания со скидкой? Пакеты? Корп. тарифы?"></textarea>
+</div>
+<div class="form-group">
+<label>Какие сегменты можно привлечь в несезон?</label>
+<textarea id="offseason_segments" placeholder="Командировочные, удалёнщики, долгосрочная аренда, мероприятия?"></textarea>
+</div>
+</div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(4)">← Назад</button>
+<button class="btn btn-success" onclick="generateRoadmap()">Сгенерировать дорожную карту →</button>
+</div>
+</div>
+
+<!-- ======== STEP 6: РЕЗУЛЬТАТ ======== -->
+<div class="step" id="step-6">
+<div class="card" style="background: linear-gradient(135deg, var(--primary), var(--accent2)); color:white;">
+<h2 style="color:white;">Дорожная карта NORT 2026</h2>
+<p style="opacity:0.8;">Сгенерировано на основе введённых данных</p>
+</div>
+
+<div id="roadmapOutput"></div>
+
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goStep(5)">← Вернуться к редактированию</button>
+<button class="btn btn-primary" onclick="exportHTML()">Скачать HTML-отчёт</button>
+<button class="btn btn-success" onclick="window.print()">Печать / PDF</button>
+</div>
+</div>
+
+</div>
+
+<script>
+const TOTAL_STEPS = 7;
+const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
+const OTA_CHANNELS = [
+{id:'yp', name:'Яндекс.Путешествия', revenue:3086398, commission:0.18, bookings:388, leads:724, convLabel:'53.6%'},
+{id:'ostrovok', name:'Островок', revenue:1142118, commission:0.18, bookings:91, leads:109, convLabel:'83.5%'},
+{id:'bronevik', name:'Броневик', revenue:1063777, commission:0.20, bookings:75, leads:83, convLabel:'90.4%'},
+{id:'otello', name:'Otello', revenue:577782, commission:0.15, bookings:65, leads:70, convLabel:'92.9%'},
+{id:'ttravel', name:'Т-Путешествия', revenue:461927, commission:0.15, bookings:63, leads:67, convLabel:'94.0%'},
+{id:'avito', name:'Avito', revenue:253562, commission:0.15, bookings:51, leads:54, convLabel:'94.4%'},
+{id:'ozon', name:'Ozon Travel', revenue:247889, commission:0.15, bookings:35, leads:40, convLabel:'87.5%'},
+{id:'google', name:'Google Hotels', revenue:245541, commission:0.07, bookings:22, leads:29, convLabel:'75.9%'},
+{id:'academ', name:'Academservice', revenue:214991, commission:0.20, bookings:12, leads:15, convLabel:'80.0%'},
+{id:'101', name:'101hotels', revenue:194393, commission:0.20, bookings:28, leads:61, convLabel:'45.9%'},
+{id:'onetwo', name:'OneTwoTrip', revenue:54318, commission:0.20, bookings:9, leads:11, convLabel:'81.8%'},
+{id:'sutochno', name:'Суточно.ру', revenue:55660, commission:0.20, bookings:10, leads:11, convLabel:'90.9%'},
+{id:'zabroniruiru', name:'Забронируй.ру', revenue:31758, commission:0.21, bookings:5, leads:5, convLabel:'100%'},
+];
+
+let currentStep = 0;
+
+function initProgressBar() {
+const bar = document.getElementById('progressBar');
+bar.innerHTML = '';
+for (let i = 0; i < TOTAL_STEPS; i++) {
+const s = document.createElement('div');
+s.className = 'progress-step';
+s.id = `prog-${i}`;
+bar.appendChild(s);
+}
+updateProgress();
+}
+
+function updateProgress() {
+for (let i = 0; i < TOTAL_STEPS; i++) {
+const el = document.getElementById(`prog-${i}`);
+el.className = 'progress-step';
+if (i < currentStep) el.classList.add('done');
+else if (i === currentStep) el.classList.add('active');
+}
+}
+
+function goStep(n) {
+document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+document.getElementById(`step-${n}`).classList.add('active');
+currentStep = n;
+updateProgress();
+saveData();
+window.scrollTo({top:0, behavior:'smooth'});
+
+if (n === 1) calcRevenue();
+}
+
+function calcRevenue() {
+const rooms = parseInt(stripNum(document.getElementById('rooms').value)) || 112;
+const container = document.getElementById('revenueTargets');
+container.innerHTML = '';
+for (let m = 1; m <= 12; m++) {
+const revpar = parseInt(stripNum(document.getElementById(`revpar_${m}`).value)) || 0;
+const rev = revpar * rooms * MONTH_DAYS[m-1];
+const div = document.createElement('div');
+div.className = 'form-group';
+div.innerHTML = `<label style="font-size:0.7rem;text-align:center">${MONTHS[m-1].substring(0,3)}</label>
+<input type="text" value="${formatNum(rev)}" readonly style="text-align:center;font-size:0.75rem;background:#f0fdf4;">`;
+container.appendChild(div);
+}
+}
+
+function initOTAAnalysis() {
+const container = document.getElementById('otaAnalysis');
+OTA_CHANNELS.forEach(ch => {
+const row = document.createElement('div');
+row.className = 'ota-row';
+row.innerHTML = `
+<span style="font-weight:600;font-size:0.8rem;">${ch.name}</span>
+<span style="font-size:0.8rem;">${formatNum(ch.revenue)} ₽</span>
+<span style="font-size:0.8rem;">${(ch.commission*100).toFixed(0)}%</span>
+<span style="font-size:0.8rem;">${ch.convLabel}</span>
+<select id="ota_eval_${ch.id}" style="font-size:0.75rem;padding:4px;">
+<option value="">—</option>
+<option value="good">Эффективен</option>
+<option value="ok">Нормально</option>
+<option value="weak">Слабый</option>
+<option value="problem">Проблемный</option>
+</select>
+<select id="ota_action_${ch.id}" style="font-size:0.75rem;padding:4px;">
+<option value="">—</option>
+<option value="keep">Оставить как есть</option>
+<option value="boost">Усилить</option>
+<option value="reduce">Сократить</option>
+<option value="off">Отключить</option>
+</select>`;
+container.appendChild(row);
+});
+}
+
+function initOTAAudit() {
+const container = document.getElementById('otaAudit');
+const platforms = ['Яндекс.Путешествия','Островок','Броневик','Otello','Т-Путешествия','Ozon Travel','Google Hotels','Avito','Суточно.ру','101hotels','OneTwoTrip','Забронируй.ру','Академсервис','2ГИС'];
+platforms.forEach((p,i) => {
+const card = document.createElement('div');
+card.style.cssText = 'padding:12px 0; border-bottom:1px solid #e5e7eb;';
+card.innerHTML = `
+<div style="font-weight:600;font-size:0.85rem;margin-bottom:8px;">${p}</div>
+<div class="grid-4">
+<div class="form-group"><label style="font-size:0.7rem;">Тарифы актуальны?</label>
+<select id="audit_tariff_${i}"><option value="">—</option><option value="yes">Да</option><option value="no">Нет</option><option value="partial">Частично</option></select></div>
+<div class="form-group"><label style="font-size:0.7rem;">Фото актуальны?</label>
+<select id="audit_photo_${i}"><option value="">—</option><option value="yes">Да</option><option value="outdated">Устарели</option><option value="missing">Не хватает</option></select></div>
+<div class="form-group"><label style="font-size:0.7rem;">Описание полное?</label>
+<select id="audit_desc_${i}"><option value="">—</option><option value="yes">Да</option><option value="no">Нужно доработать</option></select></div>
+<div class="form-group"><label style="font-size:0.7rem;">Спецпредложения?</label>
+<select id="audit_promo_${i}"><option value="">—</option><option value="yes">Есть</option><option value="no">Нет</option></select></div>
+</div>`;
+container.appendChild(card);
+});
+}
+
+function formatNum(n) {
+return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function stripNum(s) {
+return s ? s.replace(/[^\d.-]/g, '') : '0';
+}
+
+function gv(id) {
+const el = document.getElementById(id);
+return el ? el.value.trim() : '';
+}
+
+function generateRoadmap() {
+goStep(6);
+const rooms = parseInt(stripNum(gv('rooms'))) || 112;
+const factRevpar = parseInt(stripNum(gv('fact_revpar'))) || 5612;
+const targetRevpar = 6100;
+const factRevenue = parseInt(stripNum(gv('fact_revenue'))) || 196453103;
+const budgetMonthly = parseInt(stripNum(gv('budget_monthly'))) || 440000;
+
+let targetRevenueYear = 0;
+let revparByMonth = [];
+for (let m = 1; m <= 12; m++) {
+const rp = parseInt(stripNum(gv(`revpar_${m}`))) || 0;
+revparByMonth.push(rp);
+targetRevenueYear += rp * rooms * MONTH_DAYS[m-1];
+}
+
+const otaCommTotal = gv('ota_commission_total') ? parseInt(stripNum(gv('ota_commission_total'))) : 5300000;
+
+let html = '';
+
+// --- KPI SUMMARY ---
+html += `<div class="card result-section">
+<h3>Ключевые показатели 2026</h3>
+<div class="grid-4" style="margin-top:16px;">
+<div class="kpi-card">
+<div class="kpi-label">RevPAR целевой</div>
+<div class="kpi-value">6 100 ₽</div>
+<div class="kpi-target">+${((6100/factRevpar-1)*100).toFixed(1)}% к факту</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Целевая выручка</div>
+<div class="kpi-value">${formatNum(targetRevenueYear)} ₽</div>
+<div class="kpi-target">${targetRevenueYear > factRevenue ? '+' : ''}${((targetRevenueYear/factRevenue-1)*100).toFixed(1)}% к факту</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Бюджет маркетинга/год</div>
+<div class="kpi-value">${formatNum(budgetMonthly*12)} ₽</div>
+<div class="kpi-target">${(budgetMonthly*12/targetRevenueYear*100).toFixed(1)}% от целевой выручки</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Экономия OTA-комиссий (цель)</div>
+<div class="kpi-value">~${formatNum(otaCommTotal*0.15)} ₽</div>
+<div class="kpi-target">При снижении OTA-доли на 5%</div>
+</div>
+</div>
+</div>`;
+
+// --- GOALS ---
+html += `<div class="card result-section">
+<h3>Стратегические цели</h3>
+<div style="display:grid; gap:12px; margin-top:12px;">
+<div style="padding:12px; background:#f0fdf4; border-radius:8px; border-left:4px solid var(--success);">
+<strong>Цель 1:</strong> ${gv('goal_revpar') || `RevPAR ${factRevpar} → ${targetRevpar} ₽`}
+</div>
+<div style="padding:12px; background:#eff6ff; border-radius:8px; border-left:4px solid #3b82f6;">
+<strong>Цель 2:</strong> ${gv('goal_direct') || 'Рост доли прямых бронирований'}
+</div>
+<div style="padding:12px; background:#fef3c7; border-radius:8px; border-left:4px solid #f59e0b;">
+<strong>Цель 3:</strong> ${gv('goal_ota') || 'Снижение зависимости от OTA'}
+</div>
+${gv('goal_custom') ? `<div style="padding:12px; background:#fce7f3; border-radius:8px; border-left:4px solid #ec4899;">
+<strong>Цель 4:</strong> ${gv('goal_custom')}
+</div>` : ''}
+</div>
+</div>`;
+
+// --- REVENUE PLAN ---
+html += `<div class="card result-section">
+<h3>План выручки по месяцам</h3>
+<table class="roadmap-table">
+<tr><th>Месяц</th><th>RevPAR, ₽</th><th>Дней</th><th>Целевая выручка</th><th>Приоритет</th></tr>`;
+for (let m = 0; m < 12; m++) {
+const rev = revparByMonth[m] * rooms * MONTH_DAYS[m];
+const priority = revparByMonth[m] < 4500 ? '<span class="tag tag-red">Несезон</span>' :
+revparByMonth[m] < 6500 ? '<span class="tag tag-yellow">Переходный</span>' :
+'<span class="tag tag-green">Высокий сезон</span>';
+html += `<tr><td><strong>${MONTHS[m]}</strong></td><td>${formatNum(revparByMonth[m])}</td><td>${MONTH_DAYS[m]}</td><td>${formatNum(rev)} ₽</td><td>${priority}</td></tr>`;
+}
+html += `<tr style="font-weight:700;background:#f0fdf4;"><td>ИТОГО</td><td>${formatNum(targetRevpar)}</td><td>365</td><td>${formatNum(targetRevenueYear)} ₽</td><td></td></tr>`;
+html += `</table></div>`;
+
+// --- DETAILED Q1 ROADMAP ---
+html += `<div class="card result-section">
+<h3>Детальный план: Февраль — Апрель 2026</h3>`;
+
+const q1plan = [
+{
+month: 'Февраль 2026',
+tag: 'tag-red',
+tagText: 'Несезон · RevPAR 3 310',
+tasks: [
+{task: 'Аудит и оптимизация Яндекс.Директ: анализ ключей, минус-слова, снижение CPB с 2 525 до 2 000 ₽', resp: 'Влад', kpi: 'CPB ≤ 2 000 ₽', deadline: '28.02'},
+{task: 'Запуск 2ГИС: контроль первых результатов, настройка трекинга', resp: 'Влад', kpi: '≥ 15 бронирований', deadline: '28.02'},
+{task: 'Оптимизация карточки Яндекс.Карты: обновить фото, акции, ответы на отзывы', resp: 'Катя У. + Влад', kpi: 'Конверсия Карт 14% → 18%', deadline: '20.02'},
+{task: 'Полный аудит всех OTA-карточек: тарифы, фото, описания, спецпредложения', resp: 'Катя У.', kpi: 'Аудит-таблица 100% заполнена', deadline: '21.02'},
+{task: 'Собрать данные по корп. клиентам: количество, выручка, договоры', resp: 'Илья', kpi: 'Отчёт готов', deadline: '18.02'},
+{task: 'Запуск несезонных акций на OTA: длинные проживания, скидки от 3 ночей', resp: 'Илья + Катя У.', kpi: 'Акции на всех OTA', deadline: '20.02'},
+{task: 'Анализ программы лояльности: данные, причины провала, план перезапуска', resp: 'Илья', kpi: 'Документ с планом', deadline: '25.02'},
+{task: 'Ответить на все неотвеченные отзывы на всех площадках', resp: 'Катя У.', kpi: '0 неотвеченных', deadline: '17.02'},
+{task: gv('offseason_promos') ? `Несезонные промо: ${gv('offseason_promos').substring(0,100)}` : 'Запуск спецпредложений для несезона (долгое проживание, промокоды)', resp: 'Катя С.', kpi: 'Промо запущены', deadline: '18.02'},
+]
+},
+{
+month: 'Март 2026',
+tag: 'tag-yellow',
+tagText: 'Переходный · RevPAR 4 180',
+tasks: [
+{task: 'Директ: A/B тесты объявлений, запуск ретаргетинга на посетителей сайта', resp: 'Влад', kpi: 'CR +0.5%', deadline: '15.03'},
+{task: 'Запуск email/WhatsApp-рассылки по базе гостей: спецпредложения на весну', resp: 'Влад', kpi: '≥ 1 рассылка, OR > 20%', deadline: '10.03'},
+{task: gv('vlad_march') || 'Доработка сайта: проверка скорости, UX модуля бронирования', resp: 'Влад', kpi: 'Конверсия сайта +0.5%', deadline: '31.03'},
+{task: 'Обновить фото на всех OTA где по аудиту были проблемы', resp: 'Катя У.', kpi: 'Все карточки обновлены', deadline: '15.03'},
+{task: gv('ilya_march') || 'Внедрение 2-3 новых доп. услуг для роста среднего чека', resp: 'Илья', kpi: 'Доп. услуги запущены', deadline: '20.03'},
+{task: 'Активная работа с корп. сегментом: рассылка по базе предприятий, партнёрства', resp: 'Илья', kpi: '≥ 5 новых корп. контактов', deadline: '31.03'},
+{task: 'Перезапуск программы лояльности (если решение принято)', resp: 'Илья', kpi: '≥ 50 участников', deadline: '31.03'},
+{task: 'Разработка контент-плана для подготовки к высокому сезону (май)', resp: 'Катя У. + Влад', kpi: 'Контент-план готов', deadline: '25.03'},
+]
+},
+{
+month: 'Апрель 2026',
+tag: 'tag-yellow',
+tagText: 'Подготовка к сезону · RevPAR 5 020',
+tasks: [
+{task: 'Масштабирование Директа к сезону: увеличение бюджета, новые кампании по туристическим запросам', resp: 'Влад', kpi: 'Бюджет перераспределён', deadline: '10.04'},
+{task: gv('vlad_april') || 'Запуск рекламы раннего бронирования на лето', resp: 'Влад', kpi: '≥ 30 предбронирований на май-июнь', deadline: '20.04'},
+{task: 'Обновление тарифов на всех OTA на высокий сезон', resp: 'Катя У. + Катя С.', kpi: 'Тарифы обновлены на всех площадках', deadline: '05.04'},
+{task: gv('ilya_april') || 'Финальная подготовка доп. услуг к сезону', resp: 'Илья', kpi: 'Все доп. услуги работают', deadline: '15.04'},
+{task: 'Email/WhatsApp-рассылка: «Лето в NORT» — спецпредложения для прошлых гостей', resp: 'Влад', kpi: '≥ 2 рассылки, конверсия > 2%', deadline: '25.04'},
+{task: 'Фотосессия (если нужна) к сезону: обновить летние виды, общие зоны', resp: 'Катя У.', kpi: 'Новые фото на всех площадках', deadline: '20.04'},
+{task: 'Контрольная точка Q1: сверка факт vs план по всем KPI', resp: 'Катя С.', kpi: 'Отчёт + корректировка плана', deadline: '30.04'},
+]
+}
+];
+
+q1plan.forEach(q => {
+html += `<div class="timeline-item">
+<div class="tl-month">${q.month} <span class="tag ${q.tag}">${q.tagText}</span></div>
+<div class="tl-tasks">`;
+q.tasks.forEach(t => {
+html += `<div class="tl-task">
+<div><strong>${t.task}</strong><br><span class="tl-resp">${t.resp} · KPI: ${t.kpi}</span></div>
+<div style="white-space:nowrap;font-size:0.8rem;font-weight:600;color:var(--accent);">${t.deadline}</div>
+</div>`;
+});
+html += `</div></div>`;
+});
+html += `</div>`;
+
+// --- YEARLY ROADMAP ---
+html += `<div class="card result-section">
+<h3>Годовая дорожная карта (обзорно)</h3>
+<table class="roadmap-table">
+<tr><th>Период</th><th>Фокус</th><th>Ключевые инициативы</th><th>KPI периода</th></tr>
+<tr class="q-label"><td colspan="4">Q1: Январь — Март (Несезон)</td></tr>
+<tr><td>Янв-Мар</td><td>Оптимизация, корп. клиенты, подготовка базы</td>
+<td>Оптимизация Директа, запуск 2ГИС, аудит OTA, корп. продажи, перезапуск программы лояльности, несезонные акции</td>
+<td>CPB Директ ≤ 2 000 ₽<br>Конверсия Карт ≥ 18%<br>≥ 5 корп. клиентов<br>Программа лояльности перезапущена</td></tr>
+<tr class="q-label"><td colspan="4">Q2: Апрель — Июнь (Подготовка + Старт сезона)</td></tr>
+<tr><td>Апр-Июн</td><td>Масштабирование к сезону, рост ADR</td>
+<td>Масштабирование Директа, раннее бронирование, повышение тарифов, email-кампании по базе, максимальная загрузка OTA на старте</td>
+<td>RevPAR ≥ план по месяцам<br>Доля прямых ≥ 45%<br>Средний чек +5% к факту</td></tr>
+<tr class="q-label"><td colspan="4">Q3: Июль — Сентябрь (Высокий сезон)</td></tr>
+<tr><td>Июл-Сен</td><td>Максимальная загрузка, рост ADR, сбор базы</td>
+<td>Динамическое ценообразование на максимум, сбор отзывов, доп. услуги на полную мощность, активный сбор email/телефонов гостей для базы</td>
+<td>Загрузка ≥ 90%<br>ADR на пике сезона +10% к прошлому году<br>NPS / рейтинги не ниже текущих</td></tr>
+<tr class="q-label"><td colspan="4">Q4: Октябрь — Декабрь (Спад + Планирование)</td></tr>
+<tr><td>Окт-Дек</td><td>Удержание загрузки, корп. сезон, планирование 2027</td>
+<td>Осенние промо, новогодние пакеты, корп. мероприятия, рассылки по базе, аналитика года, планирование 2027</td>
+<td>Загрузка в ноябре ≥ прошл. года<br>База гостей ≥ X<br>Стратсессия 2027 проведена</td></tr>
+</table>
+</div>`;
+
+// --- CONTROL POINTS ---
+html += `<div class="card result-section">
+<h3>Контрольные точки</h3>
+<table class="roadmap-table">
+<tr><th>Дата</th><th>Что проверяем</th><th>Ответственный</th><th>Формат</th></tr>
+<tr><td><strong>28 февраля</strong></td><td>Итоги первого месяца: Директ CPB, 2ГИС первые результаты, аудит OTA завершён, корп. данные собраны</td><td>Катя С.</td><td>Мини-стратсессия 30 мин</td></tr>
+<tr><td><strong>31 марта</strong></td><td>Итоги Q1: все KPI квартала, готовность к сезону, программа лояльности, корп. pipeline</td><td>Катя С.</td><td>Стратсессия Q1 — 2 часа</td></tr>
+<tr><td><strong>30 апреля</strong></td><td>Готовность к высокому сезону: тарифы, контент, акции, бюджет масштабирован</td><td>Катя С.</td><td>Чек-лист + совещание</td></tr>
+<tr><td><strong>30 июня</strong></td><td>Итоги Q2: RevPAR vs план, доля прямых, эффект программы лояльности</td><td>Катя С.</td><td>Стратсессия Q2 — 2 часа</td></tr>
+<tr><td><strong>30 сентября</strong></td><td>Итоги высокого сезона: выручка, ADR, загрузка, база гостей, отзывы</td><td>Катя С.</td><td>Стратсессия Q3 — 2 часа</td></tr>
+<tr><td><strong>30 ноября</strong></td><td>Предварительные итоги года, планирование 2027</td><td>Катя С.</td><td>Годовая стратсессия</td></tr>
+</table>
+</div>`;
+
+// --- BUDGET ALLOCATION ---
+html += `<div class="card result-section">
+<h3>Рекомендуемое перераспределение бюджета</h3>
+<table class="roadmap-table">
+<tr><th>Статья</th><th>Сейчас (ноябрь)</th><th>% бюджета</th><th>Рекомендация</th><th>Логика</th></tr>
+<tr><td>Яндекс.Директ</td><td>121 200 ₽</td><td>64.6%</td><td>Оптимизировать, не увеличивать до снижения CPB</td><td>CPB 2 525 ₽ — дорого. Сначала оптимизация, потом масштабирование к сезону</td></tr>
+<tr><td>Яндекс.Карты</td><td>15 000 ₽</td><td>8%</td><td>Оставить или увеличить до 35 000</td><td>Цена брони 137 ₽ — в 18 раз дешевле Директа. Золотой канал.</td></tr>
+<tr><td>2ГИС</td><td>47 760 ₽</td><td>25.4% (с янв.)</td><td>Тестировать 3 месяца, оценить ROI</td><td>Новый канал. Если CPB > 1 000 ₽ через 3 мес — пересмотреть</td></tr>
+<tr><td>Коллтрекинг</td><td>13 300 ₽</td><td>7.1%</td><td>Оставить — критичен для аналитики</td><td>Без него не поймём, откуда звонки</td></tr>
+<tr><td>Полиграфия</td><td>~10 864 ₽</td><td>5.8%</td><td>По необходимости</td><td>—</td></tr>
+<tr><td>Email/WhatsApp</td><td>1 800 ₽</td><td>1%</td><td>Увеличить до 5-10 тыс, запустить регулярные рассылки</td><td>Самый дешёвый канал для повторных гостей — а их сейчас почти нет</td></tr>
+</table>
+</div>`;
+
+// --- RISKS ---
+html += `<div class="card result-section">
+<h3>Риски и что с ними делать</h3>
+<table class="roadmap-table">
+<tr><th>Риск</th><th>Вероятность</th><th>Влияние</th><th>Митигация</th></tr>
+<tr><td>Директ не оптимизируется, CPB остаётся > 2 000 ₽</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Высокое</span></td><td>Параллельно развивать Карты, email, реферальную программу</td></tr>
+<tr><td>2ГИС не даёт результат за 47 760/мес</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Среднее</span></td><td>Контрольная точка через 3 мес. Если CPB > 1 500 — отключить</td></tr>
+<tr><td>OTA снизят трафик / повысят комиссии</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Высокое</span></td><td>Наращивать прямые бронирования и базу гостей</td></tr>
+<tr><td>Несезон глубже ожидаемого</td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Среднее</span></td><td>Корп. клиенты, долгие проживания, спецтарифы</td></tr>
+<tr><td>Команда не выполняет задачи в срок</td><td><span class="tag tag-red">Высокая</span></td><td><span class="tag tag-red">Высокое</span></td><td>Еженедельные 15-мин стендапы, контрольные точки</td></tr>
+</table>
+</div>`;
+
+// --- TEAM ---
+html += `<div class="card result-section">
+<h3>Зоны ответственности</h3>
+<table class="roadmap-table">
+<tr><th>Сотрудник</th><th>Зона</th><th>Ключевые KPI на Q1</th></tr>
+<tr><td><strong>Влад Большаков</strong><br>Диджитал-маркетолог</td><td>Директ, сайт, карты, ГЕО-сервисы, email, аналитика трафика</td>
+<td>CPB Директ ≤ 2 000 ₽<br>Конверсия Карт ≥ 18%<br>2ГИС: ≥ 15 броней/мес<br>≥ 2 email-рассылки/мес</td></tr>
+<tr><td><strong>Соколов Илья</strong><br>Продуктовый маркетолог</td><td>Отзывы, LTV, программа лояльности, OTA-эффективность, доп. услуги, корп. клиенты, конкуренты</td>
+<td>Рейтинги ≥ текущих<br>≥ 5 корп. контрактов<br>Программа лояльности перезапущена<br>≥ 2 новых доп. услуги</td></tr>
+<tr><td><strong>Катя Утенкова</strong><br>Ассистент</td><td>OTA-карточки, отзывы-оперативка, визуал, фото, полиграфия</td>
+<td>100% OTA-карточек актуализированы<br>0 неотвеченных отзывов<br>Фотобанк полный<br>Полиграфия обновлена</td></tr>
+<tr><td><strong>Катя Сивкова</strong><br>Руководитель</td><td>Стратегия, ценообразование, бюджет, контрольные точки, корп. стратегия</td>
+<td>RevPAR по плану<br>Бюджет в рамках 3%<br>Все контрольные точки проведены<br>Решение по каналам принято</td></tr>
+</table>
+</div>`;
+
+document.getElementById('roadmapOutput').innerHTML = html;
+}
+
+function exportHTML() {
+const content = document.getElementById('roadmapOutput').innerHTML;
+const fullHTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>NORT Дорожная карта 2026</title>
+<style>
+body{font-family:-apple-system,sans-serif;max-width:960px;margin:0 auto;padding:20px;color:#1a1a2e;line-height:1.6;}
+h2,h3{color:#1a1a2e;} .card{margin-bottom:24px;}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0;}
+th,td{padding:10px 8px;border:1px solid #e5e7eb;text-align:left;}
+th{background:#1a1a2e;color:white;}
+tr:nth-child(even){background:#f9fafb;}
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;}
+.tag-green{background:#d1fae5;color:#065f46;} .tag-red{background:#fee2e2;color:#991b1b;}
+.tag-blue{background:#dbeafe;color:#1e40af;} .tag-yellow{background:#fef3c7;color:#92400e;}
+.kpi-card{display:flex;flex-direction:column;align-items:center;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;}
+.kpi-value{font-size:1.5rem;font-weight:700;color:#e94560;} .kpi-label{font-size:0.75rem;color:#6b7280;text-align:center;margin-top:4px;}
+.kpi-target{font-size:0.8rem;color:#10b981;font-weight:600;margin-top:2px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.timeline-item{padding:16px;margin-bottom:8px;border-left:4px solid #e94560;background:white;border-radius:0 8px 8px 0;}
+.tl-month{font-weight:700;color:#e94560;} .tl-task{padding:6px 0;display:flex;justify-content:space-between;border-bottom:1px solid #f3f4f6;}
+.tl-resp{font-size:0.75rem;color:#6b7280;} .q-label td{background:#e94560;color:white;font-weight:700;}
+.result-section{margin-bottom:32px;} .result-section h3{font-size:1.1rem;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e94560;}
+</style></head><body>
+<h1 style="text-align:center;">NORT Apart-Hotel — Дорожная карта 2026</h1>
+<p style="text-align:center;color:#6b7280;">Сгенерировано: ${new Date().toLocaleDateString('ru-RU')}</p>
+${content}
+</body></html>`;
+
+const blob = new Blob([fullHTML], {type:'text/html'});
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'NORT_Roadmap_2026.html';
+a.click();
+}
+
+// --- AUTO-SAVE ---
+function saveData() {
+const inputs = document.querySelectorAll('input, textarea, select');
+const data = {};
+inputs.forEach(el => { if(el.id) data[el.id] = el.value; });
+localStorage.setItem('nort_roadmap', JSON.stringify(data));
+}
+
+function loadData() {
+const saved = localStorage.getItem('nort_roadmap');
+if (!saved) return;
+try {
+const data = JSON.parse(saved);
+Object.keys(data).forEach(id => {
+const el = document.getElementById(id);
+if (el) el.value = data[id];
+});
+} catch(e) {}
+}
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+initProgressBar();
+initOTAAnalysis();
+initOTAAudit();
+loadData();
+
+// Auto-save on change
+document.querySelectorAll('input, textarea, select').forEach(el => {
+el.addEventListener('change', saveData);
+el.addEventListener('blur', saveData);
+});
+});
+</script>
+
+</body>
+</html>
